@@ -1,0 +1,20 @@
+<h4>Bon de livraison</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Produit</th>
+      <th>Qty Initiale</th>
+      <th>Qty Restante</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for dto in listBdlDto %}
+    <tr>
+      <td>{{ dto.product.title }}</td>
+      <td>{{ dto.qtyBefore }}</td>
+      <td><b>{{ dto.qty }}</b></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

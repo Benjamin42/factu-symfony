@@ -1,0 +1,54 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+
+  <p>
+    {% for message in app.session.flashbag.get('notice') %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+  </p>
+  
+	<div class="well">
+
+    <h4>Service</h4>
+    <hr>
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <p>
+          <b>Libellé : </b>{{ service.title }}
+        <p>
+    		<p>
+    			<b>Commentaire : </b>{{ service.comment }}
+    		<p>
+        <p>
+          <b>Actif : </b>
+          {% if service.active %}
+            <span class="label label-success">Actif</span>
+          {% else %}
+            <span class="label label-danger">Inactif</span>
+          {% endif %}
+        <p>
+
+      </div>
+
+	</div>
+
+
+  <p>
+    <a href="{{ path('service_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('service_edit', {'id': service.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier le service
+    </a>
+    <a href="{{ path('service_delete', {'id': service.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer le service
+    </a>
+  </p>
+
+{% endblock %}

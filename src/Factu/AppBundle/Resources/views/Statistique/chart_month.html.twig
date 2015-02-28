@@ -1,0 +1,83 @@
+
+
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Fin De Mois</h4>
+
+<div id="chartdiv" style="width: 100%; height: 500px;"></div>
+
+<script>
+	$(document).ready(function(){
+		var chart = AmCharts.makeChart("chartdiv", {
+	        "type": "serial",
+	        "theme": "none",
+	        "pathToImages": "http://www.amcharts.com/lib/3/images/",
+	        "legend": {
+		        "useGraphSettings": true,
+		        "position":"right"
+		    },
+	        "dataDateFormat": "DD/MM/YYYY",
+	        "valueAxes": [{
+	            "id":"v1",
+	            "axisAlpha": 0,
+	            "position": "left"
+	        }],
+	        "graphs": [
+				{% for product in listProducts %}
+				{
+					"id": "g{{ product.id }}",
+		            "bullet": "round",
+		            "bulletBorderAlpha": 1,
+		            "bulletColor": "#FFFFFF",
+		            "bulletSize": 5,
+        			"balloonText": "{{ product.title }} : [[value]]",
+		            "hideBulletsCount": 50,
+		            "lineThickness": 2,
+		            "title": "{{ product.title }}",
+		            "useLineColorForBulletBorder": true,
+		            "valueField": "{{ product.id }}",
+        			"type": "smoothedLine",
+        			"hidden":{{ product.isFollowedStat ? "false" : "true" }}
+				},
+				{% endfor %}
+			],
+	        "chartScrollbar": {
+				"graph": "g1",
+				"scrollbarHeight": 30
+			},
+	        "chartCursor": {
+	            "cursorPosition": "mouse",
+	            "pan": true,
+	             "valueLineEnabled":true,
+	             "valueLineBalloonEnabled":true
+	        },
+	        "categoryField": "date",
+	        "categoryAxis": {
+	            "parseDates": true,
+	            "dashLength": 1,
+	            "minorGridEnabled": true,
+	            "position": "top"
+	        },
+	        "dataProvider": [
+				{% for commande in listCommandeDto %}
+					{
+						"date": "15/{{ commande.dateFactu | date('m/Y') }}",
+						{% for product in listProducts %}
+							"{{ product.id }}": "{% if commande.listProduct[product.id] is defined %}{{ commande.listProduct[product.id] }}{% else %}0{% endif %}",
+						{% endfor %}
+					},
+				{% endfor %}
+	        ]
+		});
+
+		chart.addListener("rendered", zoomChart);
+
+		zoomChart();
+		function zoomChart(){
+		    chart.zoomToIndexes(chart.dataProvider.length - 40, chart.dataProvider.length - 1);
+		}
+	});
+</script>
+{% endblock %}
+

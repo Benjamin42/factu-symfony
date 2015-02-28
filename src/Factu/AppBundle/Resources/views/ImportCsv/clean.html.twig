@@ -1,0 +1,38 @@
+
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Vider la base - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Vider la base de donnée</h2>
+
+  <p>
+    Etes-vous certain de vouloir vider la base de données ?
+  </p>
+
+  <p>
+    Cette opération va :
+    <ul>
+      <li>Supprimer toutes les commandes</li>
+      <li>Supprimer tous les clients</li>
+      <li>Supprimer tous les produits</li>
+      <li>Supprimer tous les services</li>
+    </ul>
+  </p>
+
+  <form action="{{ path('import_csv_clean') }}" method="post">
+    <a href="{{ path('import_csv_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour imports
+    </a>
+
+    <input type="submit" value="Vider la base" class="btn btn-danger" />
+    
+    {# Ceci va générer le champ CSRF #}
+    {{ form_rest(form) }}
+  </form>
+
+{% endblock %}

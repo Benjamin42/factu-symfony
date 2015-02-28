@@ -1,0 +1,97 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-md-12">
+
+      <p>
+        {% for message in app.session.flashbag.get('notice') %}
+          <div class="alert alert-success" role="alert">{{ message }}</div>
+        {% endfor %}
+      </p>
+    
+    	<div class="well">
+        <p><b>Numéro de facture : </b>{{ commande.numFactu }}<p>
+        {% if commande.bdl != null %}
+          <p><b>Bon de livraison : </b>{{ commande.bdl.formatedLabel }}<p>
+        {% endif %}
+        <p><b>Client : </b>{{ commande.client.formatedLabel }}<p>
+        <p><b>Date facturation : </b>{{ commande.dateFactu | date('d/m/Y') }}<p>
+        <p><b>Date paiement : </b>{{ commande.datePayed ? commande.datePayed | date('d/m/Y') : '' }}<p>
+        <p><b>Date livraison : </b>{{ commande.dateDelivered ? commande.dateDelivered | date('d/m/Y') : '' }}<p>
+
+        <hr>
+
+        <div class="row">
+
+          <!-- PRODUCT -->
+          <div class="col-md-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Produit</th>
+                  <th>Qty</th>
+                  <th>Qty Cadeau</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for commandeProduit in commande.commandeProducts %}
+                <tr>
+                  <td>{{ commandeProduit.product.title }}</td>
+                  <td>{{ commandeProduit.qty }}</td>
+                  <td>{{ commandeProduit.qtyGift }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- SERVICE -->
+          <div class="col-md-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Montant</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for commandeService in commande.commandeServices %}
+                <tr>
+                  <td>{{ commandeService.service.title }}</td>
+                  <td>{{ commandeService.amt }} &euro;</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+    	</div>
+    </div>
+  </div>
+
+
+  <p>
+    <a href="{{ path('commande_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('commande_edit', {'id': commande.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier la commande
+    </a>
+
+    <a href="{{ path('commande_view_factu', {'id': commande.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Facture
+    </a>
+
+    <a href="{{ path('commande_delete', {'id': commande.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer la commande
+    </a>
+  </p>
+
+{% endblock %}

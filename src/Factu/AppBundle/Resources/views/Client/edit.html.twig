@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Edition du client - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Edition du client</h2>
+
+  {{ include("FactuAppBundle:Client:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('client_view', {'id': client.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour client
+    </a>
+  </p>
+
+{% endblock %}

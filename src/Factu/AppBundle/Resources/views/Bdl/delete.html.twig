@@ -1,0 +1,27 @@
+
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Supprimer un bon de livraison - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Supprimer un bon de livraison</h2>
+
+  <p>
+    Etes-vous certain de vouloir supprimer le bon de livraison "{{ bdl.numBdl ~ " - " ~ bdl.title }}" ?
+  </p>
+
+  <form action="{{ path('bdl_delete', {'id': bdl.id}) }}" method="post">
+    <a href="{{ path('bdl_view', {'id': bdl.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour au bon de livraison
+    </a>
+
+    <input type="submit" value="Supprimer" class="btn btn-danger" />
+    
+    {{ form_rest(form) }}
+  </form>
+
+{% endblock %}

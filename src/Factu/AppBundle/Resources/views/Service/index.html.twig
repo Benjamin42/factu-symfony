@@ -1,0 +1,41 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Liste des services</h4>
+
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th style="width:20px;">&nbsp;</th>
+				<th>Libellé</th>
+				<th>Commentaire</th>
+				<th style="width:20px;">&nbsp;</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for service in listServices %}
+	      <tr>
+	      	<td><a href="{{ path('service_view', {'id': service.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+	      	<td>{{ service.title }}</td>
+	      	<td>{{ service.comment }}</td>
+	      	<td>
+	      		<center>
+		          {% if service.active %}
+		            <span class="label label-success">Actif</span>
+		          {% else %}
+		            <span class="label label-danger">Inactif</span>
+		          {% endif %}
+	          	</center>
+	      	</td>
+	    {% endfor %}
+
+		</tbody>
+
+	</table>
+
+
+ <a href="{{ path('service_add') }}" class="btn btn-default">Ajouter Service</a>
+
+{% endblock %}

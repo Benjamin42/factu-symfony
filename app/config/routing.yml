@@ -1,0 +1,3 @@
+factu_app:
+    resource: "@FactuAppBundle/Resources/config/routing.yml"
+    prefix:   /

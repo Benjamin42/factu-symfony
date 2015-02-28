@@ -1,0 +1,169 @@
+<div class="well">
+
+  <div class="row">
+
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    <!-- PRODUCT -->
+    <div class="col-md-5">
+
+
+      {{ form_errors(form) }}
+
+      {# Title #}
+      <div class="form-group">
+        {{ form_label(form.title, "Titre", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+        {{ form_errors(form.title) }}
+
+        <div class="col-sm-8">
+          {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+
+
+      {# Comment #}
+      <div class="form-group">
+        {{ form_label(form.comment, "Commentaire", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+        {{ form_errors(form.comment) }}
+        <div class="col-sm-8">
+          {{ form_widget(form.comment, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+
+
+      {# Id CSV #}
+      <div class="form-group">
+        {{ form_label(form.idColCsv, "Colonne CSV", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+        {{ form_errors(form.idColCsv) }}
+        <div class="col-sm-8">
+          {{ form_widget(form.idColCsv, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+
+
+      {# Active #}
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-10">
+          <div class="checkbox">
+            <label>
+              {{ form_widget(form.active) }} Actif
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+      {# Suivi Stat #}
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-10">
+          <div class="checkbox">
+            <label>
+              {{ form_widget(form.isFollowedStat) }} Suivi Statistiques
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+      {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+    </div>
+
+
+    <!-- PRICE -->
+    <div class="col-md-7">
+        <h4>Tarifs du produits</h4>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Prix Unitaire</th>
+              <th>Prix Unitaire Livraison</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+
+          <tbody class="prices" 
+            data-prototype="
+             {% filter escape %}
+                 {{ include('FactuAppBundle:Product:prototype_price.html.twig', { 'form': form.prices.vars.prototype }) }}
+             {% endfilter %}">
+
+          {% for price in form.prices %}
+              <tr>
+                <td>{{ form_widget(price.unitPrice) }}</td>
+                <td>{{ form_widget(price.unitPriceLiv) }}</td>
+                <td>{{ form_widget(price.creaDate, {'attr': {'class': 'datepicker'}}) }}</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+
+
+        </table>
+
+    </div>
+
+    {{ form_widget(form.prices) }}
+    
+    {{ form_rest(form) }}
+    
+    {{ form_end(form) }}
+
+
+  </div>
+</div>
+
+
+<script>
+  var collectionPriceHolder = $('tbody.prices');
+
+  var addPricesLink = $('<a href="#"><div class="glyphicon glyphicon-plus-sign"></div> Ajouter un tarif</a>');
+
+  var newLinkPrice = $('<tr></tr>').append(addPricesLink);
+
+  $(document).ready(function() {
+      initElementForm(collectionPriceHolder, addPricesLink, newLinkPrice);
+  });
+
+
+  function initElementForm(collectionHolder, addLink, newLink) {
+      collectionHolder.find('tr').each(function() {
+          addCommandeElementFormDeleteLink($(this));
+      });
+      collectionHolder.append(newLink);
+
+      addLink.on('click', function(e) {
+          e.preventDefault();
+
+          addCommandeElementForm(collectionHolder, newLink);
+      });
+  }
+
+  function addCommandeElementForm(collectionHolder, newLink) {
+      var prototype = collectionHolder.attr('data-prototype');
+
+      var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
+
+      var $newFormLi = $('<tr></tr>').append(newForm);
+      addCommandeElementFormDeleteLink($newFormLi);
+      newLink.before($newFormLi);
+
+          $('.datepicker').datepicker({
+            format: "dd/mm/yyyy",
+            autoclose: true
+          });
+  }
+
+  function addCommandeElementFormDeleteLink($formTr) {
+      var removeFormA = $('<td><a href="#"><div class="glyphicon glyphicon-minus-sign"></div></a></td>');
+      $formTr.append(removeFormA);
+
+      removeFormA.on('click', function(e) {
+          e.preventDefault();
+
+          $formTr.remove();
+      });
+  }
+
+</script>

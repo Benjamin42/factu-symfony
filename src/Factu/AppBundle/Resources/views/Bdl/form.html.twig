@@ -1,0 +1,191 @@
+
+<div class="well">
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+      <div class="col-md-6">
+
+        {# Num Bdl #}
+        <div class="form-group">
+          {{ form_label(form.numBdl, "Num Bdl", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.numBdl, {'attr': {'class': 'form-control'}}) }}
+          </div>
+
+          {{ form_errors(form.numBdl) }}
+        </div>
+
+
+        {# Client #}
+        <div class="form-group">
+          {{ form_label(form.client, "Client", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.client) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+        {# Title #}
+        <div class="form-group">
+          {{ form_label(form.title, "Titre", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.title) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+        {# Date bdl #}
+        <div class="form-group">
+          {{ form_label(form.dateBdl, "Date Bdl", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.dateBdl) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.dateBdl, {'attr': {'class': 'datepicker'}}) }}
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="col-md-12">
+        <hr>
+
+        <!-- PRODUCT -->
+        <div class="col-md-6">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Qty</th>
+                <th>Qty Cadeau</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody class="commandeProducts" 
+              data-prototype="
+               {% filter escape %}
+                   {{ include('FactuAppBundle:Bdl:prototype_product.html.twig', { 'form': form.commandeProducts.vars.prototype }) }}
+               {% endfilter %}">
+
+            {% for commandeProduct in form.commandeProducts %}
+                <tr>
+                  <td>{{ form_widget(commandeProduct.product) }}</td>
+                  <td>{{ form_widget(commandeProduct.qty) }}</td>
+                  <td>{{ form_widget(commandeProduct.qtyGift) }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+
+
+        <!-- SERVICE -->
+        <div class="col-md-6">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Montant</th>
+              </tr>
+            </thead>
+            <tbody class="commandeServices" 
+              data-prototype="
+               {% filter escape %}
+                   {{ include('FactuAppBundle:Bdl:prototype_service.html.twig', { 'form': form.commandeServices.vars.prototype }) }}
+               {% endfilter %}">
+
+            {% for commandeService in form.commandeServices %}
+                <tr>
+                  <td>{{ form_widget(commandeService.service) }}</td>
+                  <td>{{ form_widget(commandeService.amt) }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+
+    </div>
+
+
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }} 
+
+
+  {{ form_widget(form.commandeProducts) }}
+  {{ form_widget(form.commandeServices) }}
+
+  {{ form_rest(form) }}
+  
+  {{ form_end(form) }}
+
+</div>
+
+
+<script>
+  var collectionProductHolder = $('tbody.commandeProducts');
+  var collectionServiceHolder = $('tbody.commandeServices');
+
+  var addCommandeProductsLink = $('<a href="#"><div class="glyphicon glyphicon-plus-sign"></div> Ajouter un produit</a>');
+  var addCommandeServicesLink = $('<a href="#"><div class="glyphicon glyphicon-plus-sign"></div> Ajouter un service</a>');
+
+  var newLinkProduct = $('<tr></tr>').append(addCommandeProductsLink);
+  var newLinkService = $('<tr></tr>').append(addCommandeServicesLink);
+
+  $(document).ready(function() {
+      initElementForm(collectionProductHolder, addCommandeProductsLink, newLinkProduct);
+
+      initElementForm(collectionServiceHolder, addCommandeServicesLink, newLinkService);
+  });
+
+
+  function initElementForm(collectionHolder, addLink, newLink) {
+      collectionHolder.find('tr').each(function() {
+          addCommandeElementFormDeleteLink($(this));
+      });
+      collectionHolder.append(newLink);
+
+      addLink.on('click', function(e) {
+          e.preventDefault();
+
+          addCommandeElementForm(collectionHolder, newLink);
+      });
+  }
+
+  function addCommandeElementForm(collectionHolder, newLink) {
+      var prototype = collectionHolder.attr('data-prototype');
+
+      var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
+
+      var $newFormLi = $('<tr></tr>').append(newForm);
+      addCommandeElementFormDeleteLink($newFormLi);
+      newLink.before($newFormLi);
+  }
+
+  function addCommandeElementFormDeleteLink($formTr) {
+      var removeFormA = $('<td><a href="#"><div class="glyphicon glyphicon-minus-sign"></div></a></td>');
+      $formTr.append(removeFormA);
+
+      removeFormA.on('click', function(e) {
+          e.preventDefault();
+
+          $formTr.remove();
+      });
+  }
+
+</script>

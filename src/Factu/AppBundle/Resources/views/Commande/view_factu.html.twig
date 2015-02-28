@@ -1,0 +1,237 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+  <div class="row">
+
+	<h4>Facture <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
+
+		<!-- Modal -->
+		<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Aide</h4>
+		      </div>
+		      <div class="modal-body">
+
+		      	<p>Le prix des produits est conditionné par :
+		      		<ul>
+		      			<li>Si la commande est à livrer ou non</li>
+		      			<li>En fonction de la date de facturation de la commande</li>
+		      			<li>En fonction de la date du bon de livraison</li>
+		      		</ul>
+		      	</p>
+
+		      	<p>La TVA ainsi que les conditions générales de vente sont paramétrables sur l'écran des paramètres.</p>
+
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+
+  	<table style="width:100%;">
+  		<tr>
+  			<td style="width:50%;">
+  				<div class="col-md-12 print">
+					{% image '@FactuAppBundle/Resources/public/img/logo.png'  output="img/logo.png" %}
+						<img src="{{ asset_url }}" alt="logo" class="pull-left" width="100%" height="100%">
+					{% endimage %}
+				</div>
+				<div class="col-md-12 no-print">
+					{% image '@FactuAppBundle/Resources/public/img/logo.png'  output="img/logo.png" %}
+						<img src="{{ asset_url }}" alt="logo" class="pull-left" width="50%" height="50%">
+					{% endimage %}
+				</div>
+  			</td>
+  			<td style="width:50%;">
+			    <div class="col-md-6">
+					<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Soilly, le {{ "now"|date("d/m/Y") }}</p>
+					
+					<br/>
+					<center>
+
+					{{ commande.client.formatedLabel }}<br/>
+					{% if commande.client.nomInfo != null and commande.client.nomInfo != "" %}
+						{{ commande.client.nomInfo }}<br/>
+					{% endif %}
+
+					{% if commande.client.bat != null and commande.client.bat != "" %}
+						{{ commande.client.bat }}<br/>
+					{% endif %}
+
+					{% if commande.client.rue != null and commande.client.rue != "" %}
+						{{ commande.client.rue }}<br/>
+					{% endif %}
+
+					{% if commande.client.bp != null and commande.client.bp != "" %}
+						{{ commande.client.bp }}<br/>
+					{% endif %}
+
+					{% if commande.client.codepostal != "" or commande.client.ville != "" %}
+						{{ commande.client.codepostal ~ " " ~ commande.client.ville }}<br/>
+					{% endif %}
+
+					{% if commande.client.pays != null and commande.client.pays.name != 'France' %}
+						{{ commande.client.pays.name }}<br/>
+					{% endif %}
+					
+					</center>
+					</br>
+				</div>
+  			</td>
+  		</tr>
+  	</table>
+
+    <div class="col-md-12">
+    	{{ parameterRepo.findOneByPName('adresse_factu_rue').pValue }}<br/>
+    	{{ parameterRepo.findOneByPName('adresse_factu_cp_ville').pValue }}<br/>
+    	{{ parameterRepo.findOneByPName('tel').pValue }}
+	</div>
+
+	<div class="col-md-12">
+		<center>
+			<h4>Facture N° {{ commande.numFactu }}</h4>
+			<h4>C.R.D</h4>
+		</center>
+	</div>
+
+    <div class="col-md-12">
+ 
+
+		<table class="table table-bordered table-condensed">
+
+			<tr>
+				<th class="center">Produit</th>
+				<th class="center">Quantité</th>
+				<th class="center">Prix Unitaire TTC</th>
+				<th class="center">Montant TTC</th>
+			</tr>
+			
+			{% set gift = false %}
+			{% for commandeProduct in commande.commandeProducts %}
+				{% if commandeProduct.qty != null and commandeProduct.qty > 0 %}
+					{% set price = commandeProduct.getLastPrice %}
+					<tr>
+						<td><b>{{ commandeProduct.product.title }}</b></td>
+						<td class="center">{{ commandeProduct.qty }}</td>
+						<td class="center">
+							{% if price == null %}
+								<span class="label label-danger">Pas de prix</span>
+							{% elseif commande.toDelivered %}	
+								{{ price.unitPriceLiv | number_format(2, '.', ' ') }}&euro;
+							{% else %}	
+								{{ price.unitPrice | number_format(2, '.', ' ') }}&euro;
+							{% endif %}
+						</td>
+						<td class="center">{{ commandeProduct.calcMontantTTC | number_format(2, '.', ' ') }}&euro;</td>
+					</tr>
+				{% endif %}
+				{% if commandeProduct.qtyGift != null and commandeProduct.qtyGift > 0 %}
+					{% set gift = true %}
+				{% endif %}
+			{% endfor %}
+			
+
+			
+			{% if commande.commandeServices | length > 0 %}
+			<tr>
+				<td colspan="4">&nbsp;</td>
+			</tr>
+			
+			<tr>
+				<th class="center">Service</th>
+				<th class="center" colspan="2">Description</th>
+				<th class="center">Montant TTC</th>
+			</tr>
+			{% endif %}
+			
+			{% for serviceCommande in commande.commandeServices %}
+				{% if serviceCommande.amt != null and serviceCommande.amt > 0 %}
+					<td>{{ serviceCommande.service.title }}</td>
+					<td colspan="2">{{ serviceCommande.service.comment }}</td>
+					<td class="center">{{ serviceCommande.amt | number_format(2, '.', ' ') }}&euro;</td>
+				{% endif %}
+			{% endfor %}
+			
+			{% set totalTTC = commande.calcMontantTTC %}
+			{% set tva = parameterRepo.findOneByPName('tva').pValue %}
+			<tr>
+				<td colspan="4">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2"></td>
+				<td colspan="1" class="right"><b>Total TTC</b></td>
+				<td class="center">{{ totalTTC | number_format(2, '.', ' ') }}&euro;</td>
+			</tr>
+			<tr>
+				<td colspan="2"></td>
+				<td colspan="1" class="right"><b>dont TVA {{ tva }}%</b></td>
+				<td class="center">{{(totalTTC - totalTTC * 100 / (100 + tva)) | number_format(2, '.', ' ') }}&euro;</td>
+			</tr>
+			<tr>
+				<td colspan="2"></td>
+				<td colspan="1" class="right"><b>Net à Payer</b></td>
+				<td class="center">{{ totalTTC | number_format(2, '.', ' ') }}&euro;</td>
+			</tr>
+			
+		</table>
+
+		{% if gift %}
+			<b>Cadeaux :</b>
+			<ul>
+				{% for commandeProduct in commande.commandeProducts %}
+					{% if commandeProduct.qtyGift > 0 %}
+						<li>{{ commandeProduct.product.title }} : {{ commandeProduct.qtyGift }}</li>
+					{% endif %}
+				
+				{% endfor %}
+				
+			</ul>
+		{% endif %}
+
+    </div>
+  </div>
+
+	<div class="div-button no-print">
+	  <p>
+	    <a href="{{ path('commande_view', {'id': commande.id}) }}" class="btn btn-default">
+	      <i class="glyphicon glyphicon-chevron-left"></i>
+	      Retour à la commande
+	    </a>
+	    <a href="{{ path('commande_edit', {'id': commande.id}) }}" class="btn btn-default">
+	      <i class="glyphicon glyphicon-edit"></i>
+	      Modifier la commande
+	    </a>
+
+	    <a href="#" class="btn btn-warning" onclick="window.print(); return false;" >
+	    	<i class="glyphicon glyphicon-print"></i>
+	    	Imprimer
+	    </a>
+	  </p>
+	</div>
+
+	<div class="footer print" >
+		<b>Merci de faire apparaitre le numero de facture au dos du chèque.</b><br/><br/>
+
+		<div class="legal-footer">
+			<p class="very-small">{{ parameterRepo.findOneByPName('reglement1').pValue }}</b></br>
+			{{ parameterRepo.findOneByPName('reglement2').pValue }}</br>
+			{{ parameterRepo.findOneByPName('reglement3').pValue }}</br>
+			{{ parameterRepo.findOneByPName('reglement4').pValue }}</br>
+			</p>
+		</div>
+		
+		<center>
+			<p class="very-small"><small>TVA Intracomunautaire : {{ parameterRepo.findOneByPName('code_tva').pValue }}</small></p>
+			<p class="very-small"><small>Siret : {{ parameterRepo.findOneByPName('num_siret').pValue }}</small></p>
+			
+		</center>
+	</div>
+
+
+{% endblock %}

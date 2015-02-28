@@ -1,0 +1,15 @@
+services:
+    factu_app.csv_client_service:
+        class: Factu\AppBundle\Service\ImportCsvClientService
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    factu_app.csv_commande_service:
+        class: Factu\AppBundle\Service\ImportCsvCommandeService
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+
+    factu_app.clean_client_service:
+        class: Factu\AppBundle\Service\ClientCleaningService
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"

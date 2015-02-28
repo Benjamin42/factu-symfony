@@ -1,0 +1,92 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-md-12">
+
+      <p>
+        {% for message in app.session.flashbag.get('notice') %}
+          <div class="alert alert-success" role="alert">{{ message }}</div>
+        {% endfor %}
+      </p>
+    
+    	<div class="well">
+        <p><b>Numéro de bdl : </b>{{ bdl.numBdl }}<p>
+        <p><b>Client : </b>{{ bdl.client.formatedLabel }}<p>
+        <p><b>Date bdl : </b>{{ bdl.dateBdl | date('d/m/Y') }}<p>
+
+        <hr>
+
+        <div class="row">
+
+          <!-- PRODUCT -->
+          <div class="col-md-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Produit</th>
+                  <th>Qty</th>
+                  <th>Qty Cadeau</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for commandeProduit in bdl.commandeProducts %}
+                <tr>
+                  <td>{{ commandeProduit.product.title }}</td>
+                  <td>{{ commandeProduit.qty }}</td>
+                  <td>{{ commandeProduit.qtyGift }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- SERVICE -->
+          <div class="col-md-6">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Montant</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for commandeService in bdl.commandeServices %}
+                <tr>
+                  <td>{{ commandeService.service.title }}</td>
+                  <td>{{ commandeService.amt }} &euro;</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+    	</div>
+    </div>
+  </div>
+
+
+  <p>
+    <a href="{{ path('bdl_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('bdl_edit', {'id': bdl.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier le bon de livraison
+    </a>
+
+    <a href="{{ path('bdl_view_factu', {'id': bdl.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Bon de livraison
+    </a>
+
+    <a href="{{ path('bdl_delete', {'id': bdl.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer le bon de livraison
+    </a>
+  </p>
+
+{% endblock %}

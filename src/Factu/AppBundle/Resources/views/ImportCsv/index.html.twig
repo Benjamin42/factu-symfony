@@ -1,0 +1,47 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Importer un fichier client</h4>
+
+<p>
+Le fichier à importer doit :
+<ul>
+	<li>Être au format CSV avec l'extension .csv</li>
+	<li>Séparateur ';'</li>
+	<li>Ne pas comporter d'entête</li>
+	<li>Ne pas comporter de dernière ligne vide</li>
+</ul>
+</p>
+
+
+<form action="{{ path('import_csv_home') }}" method="post" {{ form_enctype(form) }}>
+
+  <div class="form-group">
+    
+    <hr>
+    {{ form_label(form.fileClient, "Fichier Client à importer", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+    {{ form_widget(form.fileClient, {'attr': {'class': 'form-control'}}) }}
+
+    <p class="help-block">Example client.csv</p>
+
+    <hr>
+    {{ form_label(form.fileCommande, "Fichier Commande à importer", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+    {{ form_widget(form.fileCommande, {'attr': {'class': 'form-control'}}) }}
+
+    <p class="help-block">Example commande.csv</p>
+  </div>
+
+	
+
+  {{ form_widget(form.import, {'attr': {'class': 'btn btn-primary'}}) }} 
+
+    <a href="{{ path('import_csv_clean') }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Vider la base
+    </a>
+</form>
+
+{% endblock %}
+

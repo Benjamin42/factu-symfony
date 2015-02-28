@@ -1,0 +1,52 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Liste des clients</h4>
+
+	<table id="table" class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>Id</th>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th>Rue</th>
+				<th>Ville</th>
+				<th>Pays</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for client in listClients %}
+	      <tr>
+	      	<td style="width:20px;"><a href="{{ path('client_view', {'id': client.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+	      	<td>{{ client.id }}</td>
+	      	<td>{{ client.nom }}</td>
+	      	<td>{{ client.prenom }}</td>
+	      	<td>{{ client.rue }}</td>
+	      	<td>{{ client.ville }}</td>
+	      	<td>{{ client.pays.name }}</td>
+	      	<td style="width:40px;">
+	      		<a href="{{ path('commande_add', {'id': client.id}) }}"><div class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Commande"></div></a>
+	      		<a href="{{ path('bdl_add', {'id': client.id}) }}"><div class="glyphicon glyphicon-share" data-toggle="tooltip" data-placement="top" title="BdL"></div></a>
+	      		</td>
+	    {% endfor %}
+
+		</tbody>
+
+	</table>
+
+
+ <a href="{{ path('client_add') }}" class="btn btn-default">Ajouter Client</a>
+ 
+<script>
+	
+  $(document).ready(function() {
+  	$('[data-toggle="tooltip"]').tooltip()
+  });
+</script>
+
+{% endblock %}
+

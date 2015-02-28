@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Edition du service - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Edition du service</h2>
+
+  {{ include("FactuAppBundle:Service:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('service_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour liste
+    </a>
+  </p>
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+
+  <p>
+    {% for message in app.session.flashbag.get('notice') %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+  </p>
+  
+	<div class="well">
+		<p><b>Num Client : </b>{{ client.numClient }}<p>
+		<p><b>Num TVA : </b>{{ client.numTva }}<p>
+    {% if client.civilite != null %}
+		<p><b>Civilité : </b>{{ client.civilite.title }}<p>
+		{% endif %}
+    <p><b>Nom : </b>{{ client.nom }}<p>
+		<p><b>Prénom : </b>{{ client.prenom }}<p>
+		<p><b>Complément : </b>{{ client.nomInfo }}<p>
+		<p><b>Téléphone : </b>{{ client.tel }}<p>
+		<p><b>Portable : </b>{{ client.portable }}<p>
+		<p><b>Fax : </b>{{ client.fax }}<p>
+		<p><b>Email : </b>{{ client.email }}<p>
+		<p><b>Commentaire : </b>{{ client.commentaire }}<p>
+
+	</div>
+
+
+  <p>
+    <a href="{{ path('client_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier le client
+    </a>
+    <a href="{{ path('client_clean', {'id': client.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Cleaner le client
+    </a>
+
+    <a href="{{ path('client_delete', {'id': client.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer le client
+    </a>
+  </p>
+
+{% endblock %}

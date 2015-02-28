@@ -1,0 +1,124 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+	<h4>Fin De Mois <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
+
+	<!-- Modal -->
+	<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Aide</h4>
+	      </div>
+	      <div class="modal-body">
+
+	      	<p>Cette page permet de générer la <b>D</b>éclaration <b>R</b>écapitulative <b>M</b>ensuelle (DRM).</p>
+
+			<p>Le champ date permet de selectionner la date d'extraction. Si aucune date n'est renseigné, l'extration se fera sur l'ensemble 
+				des commandes et bons de livraisons enregistrés.</p>
+
+			<p>Seront alors affichés :
+				<ul>
+					<li>Les produits (<b>cadeau ou non</b>) de chaque commande du mois selectionné</li>
+					<li>Les produits (<b>cadeau ou non</b>) de chaque bon de livraison du mois selectionné</li>
+				</ul>
+			</p>
+
+			<p><span class="label label-danger">Attention</span> : les produits des commandes liées à un bon de livraison ne seront pas affichés.</p>
+
+			<p>
+				<div class="alert alert-danger">
+					TODO :
+					<ul>
+						<li>Génération de l'excel</li>
+					</ul>
+				</div>
+			</p>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+	{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+	    {# Date Fin de mois #}
+	    <div class="form-group">
+	      {{ form_label(form.dateMonth, "Date Fin de mois", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+	      {{ form_errors(form.dateMonth) }}
+
+	      <div class="col-sm-8">
+	        {{ form_widget(form.dateMonth, {'attr': {'class': 'datepicker-month'}}) }} {{ form_widget(form.search, {'attr': {'class': 'btn btn-primary'}}) }} 
+	      </div>
+	    </div>
+
+
+
+	{{ form_rest(form) }}
+
+	{{ form_end(form) }}
+
+	<table id="table-stats" class="table table-striped table-hover table-bordered">
+		<thead>
+			<tr>
+				<th>Date Sortie</th>
+				<th>N° Factu</th>
+				<th>N° BdL</th>
+				{% for product in listProducts %}
+					<th>{{ product.title }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for commande in listCommandes %}
+	      <tr>
+	      	<td><span>{{ commande.dateFactu | date('Y/m/d') }}</span>{{ commande.dateFactu | date('d/m/Y') }}</td>
+	      	<td align="center">
+	      		{% if commande.numFactu != null %}
+	      			<a href="{{ path('commande_view', {'id': commande.id}) }}">{{ commande.numFactu }}</a>
+	      		{% endif %}
+	      	</td>
+	      	<td align="center">
+	      		{% if commande.numBdl != null %}
+	      			<a href="{{ path('bdl_view', {'id': commande.id}) }}">{{ commande.numBdl }}</a>
+	      		{% endif %}
+	      	</td>
+			{% for product in listProducts %}
+				{% if commande.listProduct[product.id] is defined %}
+					<td align="right">{{ commande.listProduct[product.id] }}</td>
+				{% else %}
+					<td></td>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+
+		</tbody>
+
+		<tfoot>
+			<tr>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th><b>Total</b></th>
+				{% for product in listProducts %}
+					<td align="right">
+					{% if commandeTotalDto.listProduct[product.id] is defined %}
+						<b>{{ commandeTotalDto.listProduct[product.id] }}</b>
+					{% else %}
+						&nbsp;
+					{% endif %}
+					</td>
+				{% endfor %}
+			</tr>	
+		</tfoot>
+	</table>
+
+{% endblock %}
+

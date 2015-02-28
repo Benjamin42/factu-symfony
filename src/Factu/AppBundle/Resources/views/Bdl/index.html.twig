@@ -1,0 +1,41 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Liste des bons de livraison</h4>
+
+	<table id="table" class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>Num Bdl</th>
+				<th>Client</th>
+				<th>Date Bdl</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for bdl in listBdls %}
+	      <tr>
+	      	<td style="width:20px;"><a href="{{ path('bdl_view', {'id': bdl.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+	      	<td>{{ bdl.numBdl }}</td>
+	      	<td>{{ bdl.client.formatedLabel }}</td>
+	      	<td>
+	      	{% if bdl.dateBdl != null %}
+	      		<span>{{ bdl.dateBdl | date('Y/m/d') }}</span>{{ bdl.dateBdl | date('d/m/Y') }}
+	      	{% else %}
+	      		-
+	      	{% endif %}
+	      	</td>
+	    {% endfor %}
+
+		</tbody>
+
+	</table>
+
+
+ <a href="{{ path('bdl_add') }}" class="btn btn-default">Ajouter Bon de livraison</a>
+ 
+
+{% endblock %}
+

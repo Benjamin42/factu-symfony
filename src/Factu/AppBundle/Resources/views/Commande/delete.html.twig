@@ -1,0 +1,28 @@
+
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Supprimer une commande - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Supprimer une commande</h2>
+
+  <p>
+    Etes-vous certain de vouloir supprimer la commande "{{ commande.numFactu }}" ?
+  </p>
+
+  <form action="{{ path('commande_delete', {'id': commande.id}) }}" method="post">
+    <a href="{{ path('commande_view', {'id': commande.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la commande
+    </a>
+
+    <input type="submit" value="Supprimer" class="btn btn-danger" />
+    
+    {# Ceci va générer le champ CSRF #}
+    {{ form_rest(form) }}
+  </form>
+
+{% endblock %}

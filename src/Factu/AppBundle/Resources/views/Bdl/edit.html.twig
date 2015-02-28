@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Modifier un bon de livraison - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Modifier un bon de livraison</h2>
+
+  {{ include("FactuAppBundle:Bdl:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('bdl_view', {'id': bdl.id }) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour bon de livraison
+    </a>
+  </p>
+
+{% endblock %}

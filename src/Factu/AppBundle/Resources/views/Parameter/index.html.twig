@@ -1,0 +1,34 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Liste des parametres</h4>
+
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nom</th>
+				<th>Valeur</th>
+				<th>Groupe</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for param in listParameters %}
+	      <tr>
+	      	<td>{{ param.id }}</td>
+	      	<td>{{ param.pName }}</td>
+	      	<td>{{ param.pValue }}</td>
+	      	<td>{{ param.grp }}</td>
+	      	<td>{{ param.description }}</td>
+	    {% endfor %}
+
+		</tbody>
+
+	</table>
+
+
+{% endblock %}
+

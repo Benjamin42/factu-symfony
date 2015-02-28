@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{% block title %}Factu{% endblock %}</title>
+
+  {% block stylesheets %}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css">
+
+    <style>
+      .very-small {
+        font-size: 65%;
+      }
+
+      .print {
+        display: none;
+      }
+
+      #table-stats span, #table span {
+          display:none; 
+      }
+
+      @media print
+      {
+        html, body {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+
+        .no-print {
+          display: none;
+        }
+
+        .print {
+          display: block;
+        }
+
+        div.footer {
+          position: absolute;
+          bottom: 0;
+        }
+      }
+    </style>
+  {% endblock %}
+
+  {% stylesheets '@FactuAppBundle/Resources/public/css/datepicker.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+  {% endstylesheets %}
+
+  {% block javascripts %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/locales/bootstrap-datepicker.fr.js"></script>
+
+    <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
+    <script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/none.js"></script>
+
+    <script>
+
+      var dataTableDefaultParam = {
+          //lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]],
+          language: {
+              processing:     "Traitement en cours...",
+              search:         "Rechercher&nbsp;:",
+              lengthMenu:    "Afficher _MENU_ &eacute;l&eacute;ments",
+              info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+              infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+              infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+              infoPostFix:    "",
+              loadingRecords: "Chargement en cours...",
+              zeroRecords:    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+              emptyTable:     "Aucune donnée disponible dans le tableau",
+              paginate: {
+                  first:      "Premier",
+                  previous:   "Pr&eacute;c&eacute;dent",
+                  next:       "Suivant",
+                  last:       "Dernier"
+              },
+              aria: {
+                  sortAscending:  ": activer pour trier la colonne par ordre croissant",
+                  sortDescending: ": activer pour trier la colonne par ordre décroissant"
+              }
+          }
+        };
+
+      var dataTableStatsParam = jQuery.extend({}, dataTableDefaultParam);;
+      dataTableStatsParam["filter"] = false;
+      dataTableStatsParam["paging"] = false;
+
+      $(document).ready(function(){
+          $('.datepicker').datepicker({
+            language: "fr",
+            format: "dd/mm/yyyy",
+            autoclose: true,
+            todayHighlight: true
+          });
+
+          $('.datepicker-month').datepicker({
+            language: "fr",
+            format: "mm/yyyy",
+            minViewMode: 1,
+            autoclose: true
+          });
+      
+          $('#table').DataTable(dataTableDefaultParam);
+
+          $('#table-stats').DataTable(dataTableStatsParam);
+
+      });
+    </script>
+  {% endblock %}
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+
+      <div class="navbar-header">
+        <a class="navbar-brand glyphicon glyphicon-home" href="#"></a>
+      </div>
+
+     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Catalogue<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ path('product_home') }}">Produits</a></li>
+              <li><a href="{{ path('service_home') }}">Services</a></li>
+            </ul>
+          </li>
+
+          <li class=""><a href="{{ path('client_home') }}">Clients</a></li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturation <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ path('commande_home') }}">Commande</a></li>
+              <li><a href="{{ path('bdl_home') }}">Bon de livraison</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><div class="glyphicon glyphicon-stats"></div>&nbsp;Stats <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ path('stat_end_month') }}">Fin de mois</a></li>
+              <li><a href="{{ path('stat_chart_month') }}">Graphique mois</a></li>
+            </ul>
+          </li>
+
+          <li class=""><a href="{{ path('map_delivery') }}"><div class="glyphicon glyphicon-globe"></div>&nbsp;Carte des livraisons</a></li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><div class="glyphicon glyphicon-envelope"></div>&nbsp;Mailing <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="#">Envoi</a></li>
+              <li><a href="#">Liste</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><div class="glyphicon glyphicon-cog"></div>&nbsp;<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ path('parameter_home') }}">Paramétrage</a></li>
+              <li><a href="{{ path('type_home') }}">Types</a></li>
+              <li><a href="#">Datacleaning</a></li>
+              <li><a href="{{ path('import_csv_home')}}">Imports</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <div class="container">
+
+    <div class="row">
+
+        {% block body %}
+        {% endblock %}
+ 
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Modifier une commande - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Modifier une commande</h2>
+
+  {{ include("FactuAppBundle:Commande:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('commande_view', {'id': commande.id }) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour commande
+    </a>
+  </p>
+
+{% endblock %}

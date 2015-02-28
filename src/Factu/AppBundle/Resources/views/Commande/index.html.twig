@@ -1,0 +1,59 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Liste des commandes</h4>
+
+	<table id="table" class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>Num Factu</th>
+				<th>Client</th>
+				<th>Date Factu</th>
+				<th>Date Livraison</th>
+				<th>Date Paiement</th>
+				<th>Montant</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for commande in listCommandes %}
+	      <tr>
+	      	<td style="width:20px;"><a href="{{ path('commande_view', {'id': commande.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+	      	<td>{{ commande.numFactu }}</td>
+	      	<td>{{ commande.client.formatedLabel }}</td>
+	      	<td>
+	      	{% if commande.dateFactu != null %}
+	      		<span>{{ commande.dateFactu | date('Y/m/d') }}</span>{{ commande.dateFactu | date('d/m/Y') }}
+	      	{% else %}
+	      		-
+	      	{% endif %}
+	      	</td>
+	      	<td>
+	      	{% if commande.dateDelivered != null %}
+	      		<span>{{ commande.dateDelivered | date('Y/m/d') }}</span>{{ commande.dateDelivered | date('d/m/Y') }}
+	      	{% else %}
+	      		-
+	      	{% endif %}
+	      	</td>
+	      	<td>
+	      	{% if commande.datePayed != null %}
+	      		<span>{{ commande.datePayed | date('Y/m/d') }}</span>{{ commande.datePayed | date('d/m/Y') }}
+	      	{% else %}
+	      		-
+	      	{% endif %}
+	      	</td>
+	      	<td>{{ commande.calcMontantTTC | number_format(2, '.', ' ') }}&euro;</td>
+	    {% endfor %}
+
+		</tbody>
+
+	</table>
+
+
+ <a href="{{ path('commande_add') }}" class="btn btn-default">Ajouter Commande</a>
+ 
+
+{% endblock %}
+

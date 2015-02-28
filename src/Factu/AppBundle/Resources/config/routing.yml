@@ -1,0 +1,155 @@
+# PRODUCT
+product_home:
+    path:      /product
+    defaults:  { _controller: FactuAppBundle:Product:index }
+
+product_add:
+    path:      /product/add
+    defaults:  { _controller: FactuAppBundle:Product:add }
+
+product_view:
+    path:      /product/view/{id}
+    defaults:  { _controller: FactuAppBundle:Product:view }
+
+product_edit:
+    path:      /product/edit/{id}
+    defaults:  { _controller: FactuAppBundle:Product:edit }
+
+product_delete:
+    path:      /product/delete/{id}
+    defaults:  { _controller: FactuAppBundle:Product:delete }
+
+# SERVICE
+service_home:
+    path:      /service
+    defaults:  { _controller: FactuAppBundle:Service:index }
+
+service_add:
+    path:      /service/add
+    defaults:  { _controller: FactuAppBundle:Service:add }
+
+service_view:
+    path:      /service/view/{id}
+    defaults:  { _controller: FactuAppBundle:Service:view }
+
+service_edit:
+    path:      /service/edit/{id}
+    defaults:  { _controller: FactuAppBundle:Service:edit }
+
+service_delete:
+    path:      /service/delete/{id}
+    defaults:  { _controller: FactuAppBundle:Service:delete }
+
+
+# CLIENT
+client_home:
+    path:      /client
+    defaults:  { _controller: FactuAppBundle:Client:index }
+
+client_add:
+    path:      /client/add
+    defaults:  { _controller: FactuAppBundle:Client:add }
+
+client_view:
+    path:      /client/view/{id}
+    defaults:  { _controller: FactuAppBundle:Client:view }
+
+client_edit:
+    path:      /client/edit/{id}
+    defaults:  { _controller: FactuAppBundle:Client:edit }
+
+client_clean:
+    path:      /client/clean/{id}
+    defaults:  { _controller: FactuAppBundle:Client:clean }
+
+client_delete:
+    path:      /client/delete/{id}
+    defaults:  { _controller: FactuAppBundle:Client:delete }
+
+# COMMANDES
+commande_home:
+    path:      /commande
+    defaults:  { _controller: FactuAppBundle:Commande:index }
+
+commande_add:
+    path:      /commande/add/{id}
+    defaults:  { _controller: FactuAppBundle:Commande:add, id: "" }
+
+commande_view:
+    path:      /commande/view/{id}
+    defaults:  { _controller: FactuAppBundle:Commande:view }
+
+commande_view_factu:
+    path:      /commande/view_factu/{id}
+    defaults:  { _controller: FactuAppBundle:Commande:viewFactu }
+
+commande_edit:
+    path:      /commande/edit/{id}
+    defaults:  { _controller: FactuAppBundle:Commande:edit }
+
+commande_delete:
+    path:      /commande/delete/{id}
+    defaults:  { _controller: FactuAppBundle:Commande:delete }
+
+# BON DE LIVRAISON
+bdl_home:
+    path:      /bdl
+    defaults:  { _controller: FactuAppBundle:Bdl:index }
+
+bdl_add:
+    path:      /bdl/add/{id}
+    defaults:  { _controller: FactuAppBundle:Bdl:add, id: "" }
+
+bdl_view:
+    path:      /bdl/view/{id}
+    defaults:  { _controller: FactuAppBundle:Bdl:view }
+
+bdl_view_factu:
+    path:      /bdl/view_factu/{id}
+    defaults:  { _controller: FactuAppBundle:Bdl:viewFactu }
+
+bdl_view_cmd_ajax:
+    path:      /bdl/view_cmd_ajax
+    defaults:  { _controller: FactuAppBundle:Bdl:viewCmdAjax }
+
+bdl_edit:
+    path:      /bdl/edit/{id}
+    defaults:  { _controller: FactuAppBundle:Bdl:edit }
+
+bdl_delete:
+    path:      /bdl/delete/{id}
+    defaults:  { _controller: FactuAppBundle:Bdl:delete }
+
+# STATISTIQUES
+stat_end_month:
+    path:      /stats/end_month
+    defaults:  { _controller: FactuAppBundle:Statistique:endMonth }
+
+stat_chart_month:
+    path:      /stats/month_chart
+    defaults:  { _controller: FactuAppBundle:Statistique:chartMonth }
+
+# CARTE LIVRAISON
+map_delivery:
+    path:      /map_delivery
+    defaults:  { _controller: FactuAppBundle:MapDelivery:index }
+
+# TYPE
+type_home:
+    path:      /type
+    defaults:  { _controller: FactuAppBundle:Type:index }
+
+# PARAMETER
+parameter_home:
+    path:      /parameter
+    defaults:  { _controller: FactuAppBundle:Parameter:index }
+
+# Import Client
+import_csv_home:
+    path:      /import/csv
+    defaults:  { _controller: FactuAppBundle:ImportCsv:import }
+
+import_csv_clean:
+    path:      /import/clean
+    defaults:  { _controller: FactuAppBundle:ImportCsv:clean }
+

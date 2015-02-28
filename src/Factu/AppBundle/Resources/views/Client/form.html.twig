@@ -1,0 +1,244 @@
+
+<div class="well">
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+      <div class="col-md-6">
+
+        {# Num Client #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Num Client", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.numClient, {'attr': {'class': 'form-control'}}) }}
+          </div>
+
+          {{ form_errors(form.numClient) }}
+        </div>
+
+
+        {# Num  TVA #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Num TVA", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.numTva) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.numTva, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+        {# Civilite #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Civilité", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.civilite) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.civilite, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+        {# Nom #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Nom", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.nom) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+        {# Prénom #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Prénom", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.prenom) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+        {# Complément du nom #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Complément", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.nomInfo) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.nomInfo, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-6">
+
+        {# Téléphone #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Téléphone", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.tel) }}
+
+          <div class="col-sm-8">
+                <div class="input-group">
+                <div class="input-group-addon"><div class="glyphicon glyphicon-earphone"></div></div>
+                {{ form_widget(form.tel, {'attr': {'class': 'form-control'}}) }}
+              </div>
+          </div>
+        </div>
+
+
+        {# Portable #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Portable", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.nom) }}
+
+          <div class="col-sm-8">
+                <div class="input-group">
+                <div class="input-group-addon"><div class="glyphicon glyphicon-phone"></div></div>
+                {{ form_widget(form.portable, {'attr': {'class': 'form-control'}}) }}
+              </div>
+          </div>
+        </div>
+
+
+        {# Fax #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Fax", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.fax) }}
+
+          <div class="col-sm-8">
+                <div class="input-group">
+                <div class="input-group-addon"><div class="glyphicon glyphicon-print"></div></div>
+                {{ form_widget(form.fax, {'attr': {'class': 'form-control'}}) }}
+              </div>
+          </div>
+        </div>
+
+
+        {# Email #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Email", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.email) }}
+
+          <div class="col-sm-8">
+                <div class="input-group">
+                <div class="input-group-addon"><div class="glyphicon glyphicon-envelope"></div></div>
+                  {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+          </div>
+        </div>
+
+
+        {# Commentaire #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Commentaire", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.commentaire) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.commentaire, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <div class="col-md-6">
+
+        {# Rue #}
+        <div class="form-group">
+          {{ form_label(form.rue, "Rue", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.rue) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.rue, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+        {# Bat #}
+        <div class="form-group">
+          {{ form_label(form.bat, "Bat", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.bat) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.bat, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+        {# Bp #}
+        <div class="form-group">
+          {{ form_label(form.bp, "Bp ou Lieu-dit", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.bp) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.bp, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+        {# Code Postal #}
+        <div class="form-group">
+          {{ form_label(form.codePostal, "Code Postal", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.codePostal) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.codePostal, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+        {# Ville #}
+        <div class="form-group">
+          {{ form_label(form.ville, "Ville", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.ville) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.ville, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+        {# Pays #}
+        <div class="form-group">
+          {{ form_label(form.pays, "Pays", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.pays) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.pays, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }} 
+
+  {{ form_rest(form) }}
+  
+  {{ form_end(form) }}
+
+</div>
+
+

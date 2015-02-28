@@ -1,0 +1,253 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+
+	<h3>Cartographie des livraisons</h3>
+
+    <div class="row">
+      <div class="col-md-6">
+	      	
+      </div>
+
+
+      <div class="col-md-6">
+
+		<table>
+			<tr>
+				<td valign="middle">Adresse de départ : </td>
+				<td valign="middle"><input type="text" id="startAdresse" value="{{ parameterRepo.findOneByPName('default_adresse').pValue }}" disabled="true" /></td>
+				<td valign="middle">
+					<a id="linkCalc" style="visibility: hidden;" href="#myModal" onclick="calcRoute();" data-toggle="modal" class="btn btn-primary">Calculer Trajet</a>
+					<a id="linkCalcPrint" style="visibility: hidden;"href="#" class="btn btn-primary" onclick="window.print();" >Imprimer Trajet</a>
+				</td>
+				
+			</tr>
+		
+		
+		</table>
+
+		<table id="table" class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="checkAllAuto" onclick="checkAll();"></th>
+					<th>Num Factu</th>
+					<th>Client</th>
+				</tr>
+			</thead>
+
+			<tbody>
+
+		    {% for commande in listCommandes %}
+		      <tr>
+			  	<td>
+			  		{% if commande.client.latitude != null and commande.client.longitude != null %}
+			  			<input type="checkbox" id="checkboxChange_{{ commande.client.id }}" onclick="inverseMarck({{ commande.client.id }});">
+			  		{% endif %}
+			  	</td>
+		      	<td>{{ commande.numFactu }}</td>
+		      	<td>{{ commande.client.formatedLabel }}</td>
+		      
+		    {% endfor %}
+
+			</tbody>
+
+		</table>
+
+
+      </div>
+
+    </div>
+
+
+
+<script>
+	var directionDisplay;
+	var directionsDisplayToPrint;
+	var directionsService;;
+	var map;
+	var hashMarcker = {};
+	var lastOpenInfoWindow = null;
+	var countMarcker = 0;
+	
+	function checkAll() {
+		var re = new RegExp(/^checkboxChange_\d+$/);
+	       					
+		var checked = $('#checkAllAuto').is(':checked');
+		if (checked){
+			$('input[type=checkbox]').each(function () {
+				if (this.id.match(re) && $(this).is(':not(:checked)')) {
+					$(this).click();
+				}
+			});
+		} else {
+			$('input[type=checkbox]').each(function () {
+				if (this.id.match(re) && $(this).is(':checked')) {
+					$(this).click();
+				}
+			});	        				
+    	}	
+    	
+    	var options = createMapOptions(new google.maps.LatLng(46.227638, 2.213749), 6);
+    	if (map != null) {
+			map.setOptions(options);
+		}
+    }	
+    
+    function showOrHiddenLink() {
+		if (countMarcker > 0) {
+			$("#linkCalc").attr("style", "visibility:block");
+		} else {
+			$("#linkCalc").attr("style", "visibility:hidden");
+			$("#linkCalcPrint").attr("style", "visibility:hidden");
+		}	
+    }
+	
+	function inverseMarck(id) {
+		var marcker = hashMarcker[id];
+		
+		if (marcker.getMap() == null) {
+			marcker.setMap(map);
+			countMarcker++;
+		} else {
+			marcker.setMap(null);
+			countMarcker--;
+		}
+		
+		showOrHiddenLink();
+	}
+	
+	function addMarck(latitude, longitude, name, id, adresse) {
+		var infowindow = new google.maps.InfoWindow({
+            content: createContent(name, adresse),
+            maxWidth: 200
+        });
+        
+		var marker = new google.maps.Marker({
+	    	position: new google.maps.LatLng(latitude, longitude),
+	        map: null,
+	        title: name
+		});        
+        
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.open(map, marker);
+          if (lastOpenInfoWindow != null) {
+          	lastOpenInfoWindow.close();
+          }
+          lastOpenInfoWindow = infowindow;
+        });
+        
+	  	hashMarcker[id] = marker;
+	}
+	
+	function createContent(name, adresse) {
+        var contentString = '';
+        contentString += '<span class="label label-important">Nom</span> : ' + name + "<br/>";
+        contentString += '<span class="label label-important">Adresse</span> : ' + adresse + "<br/>";
+		return contentString;
+	}
+	
+	function zoom(lat, lng, idCheckBox) {
+		var options = createMapOptions(new google.maps.LatLng(lat, lng), 16);
+		if (map != null) {
+			map.setOptions(options);
+		}
+		if (!$('#' + idCheckBox).is(':checked')) {
+			$('#' + idCheckBox).click();
+		} 
+	}
+      
+	function initialize() {
+		directionsService = new google.maps.DirectionsService()
+		directionsDisplay = new google.maps.DirectionsRenderer();
+		directionsDisplayToPrint = new google.maps.DirectionsRenderer();
+		
+		var mapOptions = createMapOptions(new google.maps.LatLng(46.227638, 2.213749), 6);
+	  
+	  	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+		
+		<% @clients.each do |client| %>
+			<% if client.latitude != nil && client.longitude != nil %>
+				addMarck(<%= client.latitude %>, <%= client.longitude %>, '<%= client.nom %>', <%= client.id %>, '<%= client.long_adresse %>');
+			<% end %>
+		<% end %>
+		
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('directionsPanel'));
+        directionsDisplayToPrint.setMap(map);
+        directionsDisplayToPrint.setPanel(document.getElementById('directionsPanelToPrint'));
+        		
+		google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+          computeTotalDistance(directionsDisplay.directions);
+        });
+        
+        google.maps.event.addListener(directionsDisplayToPrint, 'directions_changed', function() {
+          computeTotalDistance(directionsDisplayToPrint.directions);
+        });
+	}
+	
+	function createMapOptions(position, zoom) {
+		return mapOptions = {
+	  		center: position,
+	  		zoom: zoom,
+	    	mapTypeId: google.maps.MapTypeId.ROADMAP
+	  	}
+	}
+	
+  function computeTotalDistance(result) {
+    var total = 0;
+    var myroute = result.routes[0];
+    for (i = 0; i < myroute.legs.length; i++) {
+      total += myroute.legs[i].distance.value;
+    }
+    total = total / 1000.
+    //document.getElementById('total').innerHTML = total + ' km';
+  }  	
+	
+	function loadScript() {
+	  var script = document.createElement("script");
+	  script.type = "text/javascript";
+	  script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyDIt0UOzmMBSaklD-XUtSqATQKaRp4HF5E&sensor=false&callback=initialize";
+	  document.body.appendChild(script);
+	}
+	
+	loadScript();
+	
+
+  function calcRoute() {
+    var start = $('#startAdresse').val();
+    var end = $('#startAdresse').val();
+    var waypts = [];
+    var checkboxArray = document.getElementById('waypoints');
+   
+    for (var key in hashMarcker) {
+    	var marker = hashMarcker[key];
+    	if (marker != null && marker.getMap() != null) {
+	    	waypts.push({
+	            location:marker.getPosition(),
+	            stopover:true});
+        }
+    }
+
+    var request = {
+        origin: start,
+        destination: end,
+        waypoints: waypts,
+        optimizeWaypoints: true,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == google.maps.DirectionsStatus.OK) {
+        directionsDisplay.setDirections(response);
+        directionsDisplayToPrint.setDirections(response);
+
+		
+			$("#linkCalcPrint").attr("style", "visibility:block");
+      }
+    });
+    
+  
+  }	
+</script>
+
+{% endblock %}
+

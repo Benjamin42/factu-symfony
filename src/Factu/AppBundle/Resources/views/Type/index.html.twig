@@ -1,0 +1,34 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+<h4>Liste des types</h4>
+
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Code</th>
+				<th>Titre</th>
+				<th>Groupe</th>
+				<th>Rank</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for type in listTypes %}
+	      <tr>
+	      	<td>{{ type.id }}</td>
+	      	<td>{{ type.code }}</td>
+	      	<td>{{ type.title }}</td>
+	      	<td>{{ type.grp }}</td>
+	      	<td>{{ type.rank }}</td>
+	    {% endfor %}
+
+		</tbody>
+
+	</table>
+
+
+{% endblock %}
+
