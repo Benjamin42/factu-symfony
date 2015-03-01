@@ -38,8 +38,9 @@
 
 	</table>
 
-
+{% if is_granted('ROLE_ADMIN') %}
  <a href="{{ path('client_add') }}" class="btn btn-default">Ajouter Client</a>
+{% endif %}
  
 <script>
 	

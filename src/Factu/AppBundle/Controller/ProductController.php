@@ -8,6 +8,7 @@ use Factu\AppBundle\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class ProductController extends Controller
 {
@@ -55,6 +56,9 @@ class ProductController extends Controller
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
     public function addAction(Request $request)
     {
     	$product = new Product();
@@ -78,6 +82,9 @@ class ProductController extends Controller
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function editAction($id, Request $request)
 	{
 	    $em = $this->getDoctrine()->getManager();
@@ -106,6 +113,9 @@ class ProductController extends Controller
 	    ));
 	 }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function deleteAction($id, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

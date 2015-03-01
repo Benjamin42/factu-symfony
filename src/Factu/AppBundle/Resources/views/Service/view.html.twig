@@ -41,6 +41,8 @@
       <i class="glyphicon glyphicon-chevron-left"></i>
       Retour à la liste
     </a>
+
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('service_edit', {'id': service.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Modifier le service
@@ -49,6 +51,7 @@
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer le service
     </a>
+    {% endif %}
   </p>
 
 {% endblock %}

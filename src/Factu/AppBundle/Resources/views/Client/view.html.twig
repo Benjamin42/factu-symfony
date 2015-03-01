@@ -31,19 +31,27 @@
       <i class="glyphicon glyphicon-chevron-left"></i>
       Retour à la liste
     </a>
+
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Modifier le client
     </a>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('client_clean', {'id': client.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Cleaner le client
     </a>
+    {% endif %}
 
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('client_delete', {'id': client.id}) }}" class="btn btn-danger">
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer le client
     </a>
+    {% endif %}
   </p>
 
 {% endblock %}

@@ -1,0 +1,44 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+
+  <p>
+    {% for message in app.session.flashbag.get('notice') %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+  </p>
+  
+	<div class="well">
+    <p><b>Login : </b>{{ user.login }}<p>
+    <p><b>Nom : </b>{{ user.nom }}<p>
+    <p><b>Prénom : </b>{{ user.prenom }}<p>
+    <p><b>Email : </b>{{ user.email }}<p>
+
+    <p>
+      <b>Roles</b>
+      <ul>
+        {% for role in user.roles %}
+          <li>{{ role.name }}</li>
+        {% endfor %}
+      </ul>
+    </p>
+	</div>
+
+
+  <p>
+    <a href="{{ path('user_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier l'utilisateur
+    </a>
+
+    <a href="{{ path('user_delete', {'id': user.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer l'utilisateur
+    </a>
+  </p>
+
+{% endblock %}

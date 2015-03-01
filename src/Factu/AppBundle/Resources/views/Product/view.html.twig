@@ -130,6 +130,8 @@
       <i class="glyphicon glyphicon-chevron-left"></i>
       Retour à la liste
     </a>
+
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('product_edit', {'id': product.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Modifier le produit
@@ -138,6 +140,7 @@
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer le produit
     </a>
+    {% endif %}
   </p>
 
 

@@ -139,20 +139,6 @@ class Client
     protected $pays;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="longitude", type="float", nullable=true)
-     */
-    private $longitude;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="latitude", type="float", nullable=true)
-     */
-    private $latitude;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -558,50 +544,34 @@ class Client
         return $this->pays;
     }
 
+    public function getlongAdresse() {
 
-    /**
-     * Set longitude
-     *
-     * @param double $longitude
-     * @return Client
-     */
-    public function setLongitude($longitude)
-    {
-        $this->longitude = $longitude;
+       $str = "";
+       if ($this->rue != null) {
+        $str .= $this->rue . " ";
+       }
 
-        return $this;
+       if ($this->bat != null) {
+        $str .= $this->bat . " ";
+       }
+
+       if ($this->bp != null) {
+        $str .= $this->bp . " ";
+       }
+
+       if ($this->codePostal != null) {
+        $str .= $this->codePostal . " ";
+       }
+
+       if ($this->ville != null) {
+        $str .= $this->ville . " ";
+       }
+
+       if ($this->pays != null) {
+        $str .= $this->pays->getName() . " ";
+       }
+
+       return $str;
     }
 
-    /**
-     * Get longitude
-     *
-     * @return double 
-     */
-    public function getLongitude()
-    {
-        return $this->longitude;
-    }
-
-    /**
-     * Set latitude
-     *
-     * @param double $latitude
-     * @return Client
-     */
-    public function setLatitude($latitude)
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    /**
-     * Get latitude
-     *
-     * @return double 
-     */
-    public function getLatitude()
-    {
-        return $this->latitude;
-    }
 }

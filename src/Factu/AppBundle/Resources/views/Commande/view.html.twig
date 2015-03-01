@@ -78,20 +78,25 @@
       <i class="glyphicon glyphicon-chevron-left"></i>
       Retour à la liste
     </a>
+
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('commande_edit', {'id': commande.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Modifier la commande
     </a>
+    {% endif %}
 
     <a href="{{ path('commande_view_factu', {'id': commande.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Facture
     </a>
 
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('commande_delete', {'id': commande.id}) }}" class="btn btn-danger">
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer la commande
     </a>
+    {% endif %}
   </p>
 
 {% endblock %}

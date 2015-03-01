@@ -73,20 +73,25 @@
       <i class="glyphicon glyphicon-chevron-left"></i>
       Retour à la liste
     </a>
+
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('bdl_edit', {'id': bdl.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Modifier le bon de livraison
     </a>
+    {% endif %}
 
     <a href="{{ path('bdl_view_factu', {'id': bdl.id}) }}" class="btn btn-default">
       <i class="glyphicon glyphicon-edit"></i>
       Bon de livraison
     </a>
 
+    {% if is_granted('ROLE_ADMIN') %}
     <a href="{{ path('bdl_delete', {'id': bdl.id}) }}" class="btn btn-danger">
       <i class="glyphicon glyphicon-trash"></i>
       Supprimer le bon de livraison
     </a>
+    {% endif %}
   </p>
 
 {% endblock %}

@@ -35,7 +35,8 @@
 
 	</table>
 
-
+{% if is_granted('ROLE_ADMIN') %}
  <a href="{{ path('service_add') }}" class="btn btn-default">Ajouter Service</a>
+{% endif %}
 
 {% endblock %}

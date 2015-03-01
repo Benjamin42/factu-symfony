@@ -1,0 +1,75 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+
+	<h4>Liste des utilisateurs <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
+
+	<!-- Modal -->
+	<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Aide</h4>
+	      </div>
+	      <div class="modal-body">
+
+	      	<p>L'application possède 2 droits différents : <b>Admin</b> et <b>User</b></p>
+
+	      	<p>
+	      		<ul>
+	      			<li>Le droit <b>Admin</b> a un accès à toute l'application et a accès au menu de configuration.</li>
+	      			<li>Le droit <b>User</b> a un accès en lecture seule de l'application (aucun ajout / modification / suppression) et ne voit pas le menu de configuration.</li>
+	      		</ul>
+	      	</p>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<table id="table" class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>&nbsp;</th>
+				<th>login</th>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th>Email</th>
+				<th style="width:100px;">Actif</th>
+			</tr>
+		</thead>
+
+		<tbody>
+
+	    {% for user in listUsers %}
+	      <tr>
+	      	<td style="width:20px;"><a href="{{ path('user_view', {'id': user.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+	      	<td>{{ user.login }}</td>
+	      	<td>{{ user.nom }}</td>
+	      	<td>{{ user.prenom }}</td>
+	      	<td>{{ user.email }}</td>
+	      	<td>
+	      		<center>
+		          {% if user.active %}
+		            <div class="label label-success">Actif</div>
+		          {% else %}
+		            <div class="label label-danger">Inactif</div>
+		          {% endif %}
+	          	</center>
+	      	</td>
+	      </tr>
+	    {% endfor %}
+
+		</tbody>
+
+	</table>
+
+
+ <a href="{{ path('user_add') }}" class="btn btn-default">Ajouter Utilisateur</a>
+
+{% endblock %}
+

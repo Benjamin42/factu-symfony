@@ -1,0 +1,19 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Accueil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+  <p>
+    {% for message in app.session.flashbag.get('notice') %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+  </p>
+  
+  	<h3>Accueil</h3>
+
+	<p>Bienvenue {{ app.user.username }} </p>
+
+
+{% endblock %}

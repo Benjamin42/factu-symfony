@@ -1,0 +1,13 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Modifier mon profil - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Modifier mon profil</h2>
+
+  {{ include("FactuUserBundle:User:form.html.twig") }}
+
+{% endblock %}

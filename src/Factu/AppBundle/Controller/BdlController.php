@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class BdlController extends Controller
 {
@@ -96,6 +97,9 @@ class BdlController extends Controller
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
     public function addAction($id, Request $request)
     {
     	$bdl = new Bdl();
@@ -132,6 +136,9 @@ class BdlController extends Controller
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function editAction($id, Request $request)
 	{
 	    $em = $this->getDoctrine()->getManager();
@@ -159,6 +166,9 @@ class BdlController extends Controller
 	    ));
 	}
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function deleteAction($id, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

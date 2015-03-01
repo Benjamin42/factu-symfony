@@ -203,10 +203,13 @@
 	      <i class="glyphicon glyphicon-chevron-left"></i>
 	      Retour à la commande
 	    </a>
+
+	    {% if is_granted('ROLE_ADMIN') %}
 	    <a href="{{ path('commande_edit', {'id': commande.id}) }}" class="btn btn-default">
 	      <i class="glyphicon glyphicon-edit"></i>
 	      Modifier la commande
 	    </a>
+	    {% endif %}
 
 	    <a href="#" class="btn btn-warning" onclick="window.print(); return false;" >
 	    	<i class="glyphicon glyphicon-print"></i>

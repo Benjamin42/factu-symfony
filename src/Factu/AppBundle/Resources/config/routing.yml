@@ -1,3 +1,8 @@
+# ACCUEIL
+home:
+    path:      /
+    defaults:  { _controller: FactuAppBundle:Accueil:index }
+
 # PRODUCT
 product_home:
     path:      /product

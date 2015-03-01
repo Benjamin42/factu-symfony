@@ -8,6 +8,7 @@ use Factu\AppBundle\Form\CommandeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class CommandeController extends Controller
 {
@@ -58,6 +59,9 @@ class CommandeController extends Controller
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
     public function addAction($id, Request $request)
     {
     	$commande = new Commande();
@@ -91,14 +95,24 @@ class CommandeController extends Controller
 
 		    $request->getSession()->getFlashBag()->add('notice', 'Commande bien enregistrée.');
 
-		    return $this->redirect($this->generateUrl('commande_view', array('id' => $commande->getId())));
-	    }
+		    // On met a jour le badge compteur de nombre de commande à livrer
+		    $nbCmdToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Commande')
+		      ->getNbCommandeToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver);
+
+			    return $this->redirect($this->generateUrl('commande_view', array('id' => $commande->getId())));
+		    }
 
 	    return $this->render('FactuAppBundle:Commande:add.html.twig', array(
 	      'form' => $form->createView(),
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function editAction($id, Request $request)
 	{
 	    $em = $this->getDoctrine()->getManager();
@@ -123,6 +137,13 @@ class CommandeController extends Controller
 
 		    $request->getSession()->getFlashBag()->add('notice', 'Commande bien enregistré.');
 
+		    // On met a jour le badge compteur de nombre de commande à livrer
+		    $nbCmdToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Commande')
+		      ->getNbCommandeToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver);
+
 		    return $this->redirect($this->generateUrl('commande_view', array('id' => $commande->getId())));
 	    }
 
@@ -131,6 +152,9 @@ class CommandeController extends Controller
 	    ));
 	}
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function deleteAction($id, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

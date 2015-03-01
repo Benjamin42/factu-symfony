@@ -1,0 +1,104 @@
+
+<div class="well">
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    {{ form_errors(form) }}
+
+    <div class="row">
+      <div class="col-md-6">
+
+        {# Login #}
+        <div class="form-group">
+          {{ form_label(form.login, "Login", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.login, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+          </div>
+
+          {{ form_errors(form.login) }}
+        </div>
+
+        {# Nom #}
+        <div class="form-group">
+          {{ form_label(form.nom, "Nom", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+          </div>
+
+          {{ form_errors(form.nom) }}
+        </div>
+
+        {# Prénom #}
+        <div class="form-group">
+          {{ form_label(form.prenom, "Prenom", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.prenom, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+          </div>
+
+          {{ form_errors(form.prenom) }}
+        </div>
+
+        {# Email #}
+        <div class="form-group">
+          {{ form_label(form.email, "Email", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'autocomplete': 'off'}}) }}
+          </div>
+
+          {{ form_errors(form.email) }}
+        </div>
+
+
+
+
+
+        {# Mot de passe #}
+        <div class="form-group">
+          {{ form_label(form.password, "Password", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.password) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+          </div>
+        </div>
+
+        {# Active #}
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-10">
+            <div class="checkbox">
+              <label>
+                {{ form_widget(form.active) }} Actif
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {# Roles #}
+        <div class="form-group">
+          {{ form_label(form.roles, "Roles", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+          {{ form_errors(form.roles) }}
+
+          <div class="col-sm-8">
+            {{ form_widget(form.roles, {'attr': {'class': ''}}) }}
+          </div>
+        </div>
+        
+      </div>
+
+    </div>
+
+  {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }} 
+
+
+  {{ form_widget(form.roles) }}
+
+  {{ form_rest(form) }}
+  
+  {{ form_end(form) }}
+
+</div>

@@ -8,6 +8,7 @@ use Factu\AppBundle\Form\ClientType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class ClientController extends Controller
 {
@@ -38,6 +39,9 @@ class ClientController extends Controller
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
     public function addAction(Request $request)
     {
     	$client = new Client();
@@ -74,6 +78,9 @@ class ClientController extends Controller
 	    ));
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function editAction($id, Request $request)
 	{
 	    $em = $this->getDoctrine()->getManager();
@@ -101,6 +108,9 @@ class ClientController extends Controller
 	    ));
 	}
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function cleanAction($id, Request $request)
 	{
 	    $em = $this->getDoctrine()->getManager();
@@ -131,6 +141,9 @@ class ClientController extends Controller
 	    ));
 	}
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function deleteAction($id, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

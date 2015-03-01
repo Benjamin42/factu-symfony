@@ -4,9 +4,31 @@
 
 	<h3>Cartographie des livraisons</h3>
 
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Aide</h4>
+	      </div>
+	      <div class="modal-body">
+
+	      	<div id="directionsPanel"></div>
+
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
     <div class="row">
       <div class="col-md-6">
-	      	
+	      
+		<div id="map_canvas" style="width:550px; height:550px;" class="center"></div>
+
       </div>
 
 
@@ -15,23 +37,23 @@
 		<table>
 			<tr>
 				<td valign="middle">Adresse de départ : </td>
-				<td valign="middle"><input type="text" id="startAdresse" value="{{ parameterRepo.findOneByPName('default_adresse').pValue }}" disabled="true" /></td>
+				<td valign="middle"><input type="text" class="form-control" id="startAdresse" value="{{ parameterRepo.findOneByPName('default_adresse').pValue }}" disabled="true" /></td>
 				<td valign="middle">
 					<a id="linkCalc" style="visibility: hidden;" href="#myModal" onclick="calcRoute();" data-toggle="modal" class="btn btn-primary">Calculer Trajet</a>
 					<a id="linkCalcPrint" style="visibility: hidden;"href="#" class="btn btn-primary" onclick="window.print();" >Imprimer Trajet</a>
 				</td>
-				
 			</tr>
-		
-		
 		</table>
+
+		<hr>
 
 		<table id="table" class="table table-striped table-hover">
 			<thead>
 				<tr>
 					<th><input type="checkbox" id="checkAllAuto" onclick="checkAll();"></th>
-					<th>Num Factu</th>
 					<th>Client</th>
+					<th>Adresse</th>
+					<th>&nbsp;</th>
 				</tr>
 			</thead>
 
@@ -39,14 +61,10 @@
 
 		    {% for commande in listCommandes %}
 		      <tr>
-			  	<td>
-			  		{% if commande.client.latitude != null and commande.client.longitude != null %}
-			  			<input type="checkbox" id="checkboxChange_{{ commande.client.id }}" onclick="inverseMarck({{ commande.client.id }});">
-			  		{% endif %}
-			  	</td>
-		      	<td>{{ commande.numFactu }}</td>
+			  	<td><input type="checkbox" id="checkboxChange_{{ commande.client.id }}" onclick="inverseMarck({{ commande.client.id }});"></td>
 		      	<td>{{ commande.client.formatedLabel }}</td>
-		      
+		      	<td>{{ commande.client.getlongAdresse }}</td>
+		      	<td><a href="{{ path('commande_view', {'id': commande.id}) }}"><div class="glyphicon glyphicon-search"></div></td>
 		    {% endfor %}
 
 			</tbody>
@@ -116,33 +134,43 @@
 		showOrHiddenLink();
 	}
 	
-	function addMarck(latitude, longitude, name, id, adresse) {
+	function addMarck(name, id, adresse) {
 		var infowindow = new google.maps.InfoWindow({
-            content: createContent(name, adresse),
+            content: createContent(name, adresse, id),
             maxWidth: 200
         });
         
-		var marker = new google.maps.Marker({
-	    	position: new google.maps.LatLng(latitude, longitude),
-	        map: null,
-	        title: name
-		});        
-        
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.open(map, marker);
-          if (lastOpenInfoWindow != null) {
-          	lastOpenInfoWindow.close();
-          }
-          lastOpenInfoWindow = infowindow;
-        });
-        
-	  	hashMarcker[id] = marker;
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode( { 'address': adresse}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				map.setCenter(results[0].geometry.location);
+				var marker = new google.maps.Marker({
+					map: null,
+					position: results[0].geometry.location,
+	        		title: name
+				});
+
+		        google.maps.event.addListener(marker, 'click', function() {
+		          infowindow.open(map, marker);
+		          if (lastOpenInfoWindow != null) {
+		          	lastOpenInfoWindow.close();
+		          }
+		          lastOpenInfoWindow = infowindow;
+		        });
+		        
+			  	hashMarcker[id] = marker;
+			} else {
+				alert("Geocode was not successful for the following reason: " + status);
+			}
+	    });
+
 	}
 	
-	function createContent(name, adresse) {
+	function createContent(name, adresse, id) {
         var contentString = '';
-        contentString += '<span class="label label-important">Nom</span> : ' + name + "<br/>";
-        contentString += '<span class="label label-important">Adresse</span> : ' + adresse + "<br/>";
+        contentString += "<span><b>Nom</b></span> : " + name + "<br/>";
+        contentString += "<span><b>Adresse</b></span> : " + adresse + "<br/>";
+        contentString += "<a onClick='lastOpenInfoWindow.close(); inverseMarck(" + id + "); $(\"#checkboxChange_" + id + "\").attr(\"checked\", false); ' ><div class='glyphicon glyphicon-eye-close'></div></a>";
 		return contentString;
 	}
 	
@@ -165,11 +193,10 @@
 	  
 	  	map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 		
-		<% @clients.each do |client| %>
-			<% if client.latitude != nil && client.longitude != nil %>
-				addMarck(<%= client.latitude %>, <%= client.longitude %>, '<%= client.nom %>', <%= client.id %>, '<%= client.long_adresse %>');
-			<% end %>
-		<% end %>
+		{% for commande in listCommandes %}
+			{% set client = commande.client %}
+			addMarck('{{ client.nom }}', {{ client.id }}, '{{ client.getlongAdresse }}');
+		{% endfor %}
 		
         directionsDisplay.setMap(map);
         directionsDisplay.setPanel(document.getElementById('directionsPanel'));

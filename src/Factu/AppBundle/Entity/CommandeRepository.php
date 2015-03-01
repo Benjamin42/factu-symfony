@@ -31,8 +31,7 @@ class CommandeRepository extends EntityRepository
 
 	public function getCommandeToDelivery() {
 	    $query = $this->getEntityManager()
-	        ->createQuery('SELECT c FROM FactuAppBundle:Commande c WHERE c.toDelivered = 1 AND c.isDelivered = 0')
-	        ->setMaxResults(1);
+	        ->createQuery('SELECT c FROM FactuAppBundle:Commande c WHERE c.toDelivered = 1 AND c.isDelivered = 0');
 	        
 	    try {
 	    	return $query->getResult();
@@ -44,7 +43,7 @@ class CommandeRepository extends EntityRepository
 	public function getNbCommandeToDelivery() {
     	$listCommandes = $this->getCommandeToDelivery();
     	if ($listCommandes != null) {
-    		return length($listCommandes);
+    		return count($listCommandes);
     	} else {
         	return 0;
         } 

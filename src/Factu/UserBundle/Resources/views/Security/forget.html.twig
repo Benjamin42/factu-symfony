@@ -1,0 +1,29 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="http://getbootstrap.com/examples/signin/signin.css">
+
+<div class="container">
+
+
+	  <p>
+	    {% for message in app.session.flashbag.get('error') %}
+	      <div class="alert alert-danger" role="alert">{{ message }}</div>
+	    {% endfor %}
+	  </p>
+
+	<form class="form-signin"  action="{{ path('forget') }}" method="post">
+	    <h2 class="form-signin-heading">Mot de passe oublié</h2>
+    	<a href="{{ path('login') }}">Retour</a>
+
+	    {{ form_widget(form.login, {'attr': {'class': 'form-control', 'placeholder':'Login', 'required':'required',  'autofocus':'true'}}) }}
+		
+	    <br/>
+	  	{{ form_widget(form.envoyer, {'attr': {'class': 'btn btn-primary'}}) }} 
+
+	</form>
+
+</div>
+
+{% endblock %}

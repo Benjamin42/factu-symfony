@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Modifier un utilisateur - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Modifier un utilisateur</h2>
+
+  {{ include("FactuUserBundle:User:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('user_view', {'id': user.id }) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour utilisateur
+    </a>
+  </p>
+
+{% endblock %}

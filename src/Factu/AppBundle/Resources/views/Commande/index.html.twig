@@ -51,9 +51,9 @@
 
 	</table>
 
-
+{% if is_granted('ROLE_ADMIN') %}
  <a href="{{ path('commande_add') }}" class="btn btn-default">Ajouter Commande</a>
- 
+{% endif %}
 
 {% endblock %}
 

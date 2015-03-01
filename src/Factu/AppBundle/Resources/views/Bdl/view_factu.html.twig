@@ -5,32 +5,32 @@
 
 	<h4>Bon de livraison <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
 
-		<!-- Modal -->
-		<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Aide</h4>
-		      </div>
-		      <div class="modal-body">
+	<!-- Modal -->
+	<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Aide</h4>
+	      </div>
+	      <div class="modal-body">
 
-		      	<p>Le prix des produits est conditionné par :
-		      		<ul>
-		      			<li>En fonction de la date du bon de livraison</li>
-		      			<li>Seul le prix hors livraison est considéré</li>
-		      		</ul>
-		      	</p>
+	      	<p>Le prix des produits est conditionné par :
+	      		<ul>
+	      			<li>En fonction de la date du bon de livraison</li>
+	      			<li>Seul le prix hors livraison est considéré</li>
+	      		</ul>
+	      	</p>
 
-		      	<p>Les conditions générales de vente sont paramétrables sur l'écran des paramètres.</p>
+	      	<p>Les conditions générales de vente sont paramétrables sur l'écran des paramètres.</p>
 
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 
   	<table style="width:100%;">
@@ -189,10 +189,12 @@
 	      <i class="glyphicon glyphicon-chevron-left"></i>
 	      Retour au bon de livraison
 	    </a>
+	    {% if is_granted('ROLE_ADMIN') %}
 	    <a href="{{ path('bdl_edit', {'id': bdl.id}) }}" class="btn btn-default">
 	      <i class="glyphicon glyphicon-edit"></i>
 	      Modifier le bon de livraison
 	    </a>
+	    {% endif %}
 
 	    <a href="#" class="btn btn-warning" onclick="window.print(); return false;" >
 	    	<i class="glyphicon glyphicon-print"></i>

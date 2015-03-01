@@ -5,10 +5,14 @@ namespace Factu\AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class ImportCsvController extends Controller
 {
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
     public function importAction(Request $request)
     {
 		$form = $this->get('form.factory')
@@ -58,6 +62,9 @@ class ImportCsvController extends Controller
 	  	}
     }
 
+	/**
+	* @Security("has_role('ROLE_ADMIN')")
+	*/
 	public function cleanAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

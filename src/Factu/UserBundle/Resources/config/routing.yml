@@ -1,0 +1,43 @@
+# LOGIN
+login:
+    pattern:   /login
+    defaults:  { _controller: FactuUserBundle:Security:login }
+
+forget:
+    pattern:   /forget
+    defaults:  { _controller: FactuUserBundle:Security:forget }
+
+send_new_password:
+    pattern:   /send_new_pass
+    defaults:  { _controller: FactuUserBundle:Security:sendNewPassword }
+
+login_check:
+    pattern:   /login_check
+
+logout:
+    pattern:   /logout
+
+    # User
+user_home:
+    path:      /user
+    defaults:  { _controller: FactuUserBundle:User:index }
+
+user_view:
+    path:      /user/view/{id}
+    defaults:  { _controller: FactuUserBundle:User:view }
+
+user_add:
+    path:      /user/add
+    defaults:  { _controller: FactuUserBundle:User:add }
+
+user_edit:
+    path:      /user/edit/{id}
+    defaults:  { _controller: FactuUserBundle:User:edit }
+
+user_edit_profil:
+    path:      /user/edit_profil
+    defaults:  { _controller: FactuUserBundle:User:editMyProfil }
+
+user_delete:
+    path:      /user/delete/{id}
+    defaults:  { _controller: FactuUserBundle:User:delete }

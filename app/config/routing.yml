@@ -1,3 +1,7 @@
 factu_app:
     resource: "@FactuAppBundle/Resources/config/routing.yml"
     prefix:   /
+
+user_app:
+    resource: "@FactuUserBundle/Resources/config/routing.yml"
+    prefix:   /
