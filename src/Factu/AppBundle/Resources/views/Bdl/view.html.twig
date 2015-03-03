@@ -14,6 +14,7 @@
         <p><b>Numéro de bdl : </b>{{ bdl.numBdl }}<p>
         <p><b>Client : </b>{{ bdl.client.formatedLabel }}<p>
         <p><b>Date bdl : </b>{{ bdl.dateBdl | date('d/m/Y') }}<p>
+        <p><b>Date livraison : </b>{{ bdl.dateDelivered ? bdl.dateDelivered | date('d/m/Y') : '' }}<p>
 
         <hr>
 

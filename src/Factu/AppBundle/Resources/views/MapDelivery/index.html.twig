@@ -67,6 +67,14 @@
 		      	<td><a href="{{ path('commande_view', {'id': commande.id}) }}"><div class="glyphicon glyphicon-search"></div></td>
 		    {% endfor %}
 
+		    {% for bdl in listBdls %}
+		      <tr>
+			  	<td><input type="checkbox" id="checkboxChange_{{ bdl.client.id }}" onclick="inverseMarck({{ bdl.client.id }});"></td>
+		      	<td>{{ bdl.client.formatedLabel }}</td>
+		      	<td>{{ bdl.client.getlongAdresse }}</td>
+		      	<td><a href="{{ path('bdl_view', {'id': bdl.id}) }}"><div class="glyphicon glyphicon-search"></div></td>
+		    {% endfor %}
+
 			</tbody>
 
 		</table>
@@ -195,6 +203,11 @@
 		
 		{% for commande in listCommandes %}
 			{% set client = commande.client %}
+			addMarck('{{ client.nom }}', {{ client.id }}, '{{ client.getlongAdresse }}');
+		{% endfor %}
+
+		{% for bdl in listBdls %}
+			{% set client = bdl.client %}
 			addMarck('{{ client.nom }}', {{ client.id }}, '{{ client.getlongAdresse }}');
 		{% endfor %}
 		

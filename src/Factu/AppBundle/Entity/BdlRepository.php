@@ -29,6 +29,26 @@ class BdlRepository extends EntityRepository
 	    }
 	}
 
+	public function getBdlToDelivery() {
+	    $query = $this->getEntityManager()
+	        ->createQuery('SELECT c FROM FactuAppBundle:Bdl c WHERE c.toDelivered = 1 AND c.isDelivered = 0');
+	        
+	    try {
+	    	return $query->getResult();
+	    } catch (\Doctrine\ORM\NoResultException $e) {
+	        return null;
+	    }
+	}
+
+	public function getNbBdlToDelivery() {
+    	$listBdls = $this->getBdlToDelivery();
+    	if ($listBdls != null) {
+    		return count($listBdls);
+    	} else {
+        	return 0;
+        } 
+	}
+
 	public function getBdlsByYearMonthDay($month, $year) {
 		$emConfig = $this->getEntityManager()->getConfiguration();
 	    $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');

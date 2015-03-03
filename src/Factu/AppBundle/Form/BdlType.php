@@ -18,6 +18,9 @@ class BdlType extends AbstractType
             ->add('numBdl',           'number', array('required' => false))
             ->add('title',            'text')
             ->add('dateBdl',          'date', array('required' => false, 'widget' =>'single_text', 'format' =>'dd/MM/yyyy'))
+            ->add('toDelivered',      'checkbox', array('required' => false))
+            ->add('isDelivered',        'checkbox', array('required' => false))
+            ->add('dateDelivered',      'date', array('required' => false, 'widget' =>'single_text', 'format' =>'dd/MM/yyyy'))
             ->add('save',               'submit')
             ->add('client', 'entity', array(
               'class'    => 'FactuAppBundle:Client',

@@ -50,6 +50,27 @@ class Bdl
     private $dateBdl;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="to_delivered", type="boolean")
+     */
+    private $toDelivered;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_delivered", type="boolean")
+     */
+    private $isDelivered;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_delivered", type="datetime", nullable=true)
+     */
+    private $dateDelivered;
+
+    /**
     * @ORM\OneToMany(targetEntity="Factu\AppBundle\Entity\CommandeProduct", mappedBy="bdl", cascade={"persist", "remove"}, orphanRemoval=true)
     */
     protected $commandeProducts;
@@ -154,6 +175,75 @@ class Bdl
     public function getDateBdl()
     {
         return $this->dateBdl;
+    }
+
+    /**
+     * Set toDelivered
+     *
+     * @param boolean $toDelivered
+     * @return Commande
+     */
+    public function setToDelivered($toDelivered)
+    {
+        $this->toDelivered = $toDelivered;
+
+        return $this;
+    }
+
+    /**
+     * Get toDelivered
+     *
+     * @return boolean 
+     */
+    public function getToDelivered()
+    {
+        return $this->toDelivered;
+    }
+
+    /**
+     * Set isDelivered
+     *
+     * @param boolean $isDelivered
+     * @return Commande
+     */
+    public function setIsDelivered($isDelivered)
+    {
+        $this->isDelivered = $isDelivered;
+
+        return $this;
+    }
+
+    /**
+     * Get isDelivered
+     *
+     * @return boolean 
+     */
+    public function getIsDelivered()
+    {
+        return $this->isDelivered;
+    }
+
+    /**
+     * Set dateDelivered
+     *
+     * @param \DateTime $dateDelivered
+     * @return Commande
+     */
+    public function setDateDelivered($dateDelivered)
+    {
+        $this->dateDelivered = $dateDelivered;
+
+        return $this;
+    }
+
+    /**
+     * Get dateDelivered
+     *
+     * @return \DateTime 
+     */
+    public function getDateDelivered()
+    {
+        return $this->dateDelivered;
     }
 
     /***************************************************************************

@@ -10,6 +10,7 @@
 				<th>Num Bdl</th>
 				<th>Client</th>
 				<th>Date Bdl</th>
+				<th>Date Livraison</th>
 			</tr>
 		</thead>
 
@@ -23,6 +24,13 @@
 	      	<td>
 	      	{% if bdl.dateBdl != null %}
 	      		<span>{{ bdl.dateBdl | date('Y/m/d') }}</span>{{ bdl.dateBdl | date('d/m/Y') }}
+	      	{% else %}
+	      		-
+	      	{% endif %}
+	      	</td>
+	      	<td>
+	      	{% if bdl.dateDelivered != null %}
+	      		<span>{{ bdl.dateDelivered | date('Y/m/d') }}</span>{{ bdl.dateDelivered | date('d/m/Y') }}
 	      	{% else %}
 	      		-
 	      	{% endif %}

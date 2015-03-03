@@ -1,0 +1,36 @@
+<div class="well">
+
+  <div class="row">
+
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+    <!-- PARAMETER -->
+    <div class="col-md-5">
+
+
+      {{ form_errors(form) }}
+
+      {# Title #}
+      <div class="form-group">
+        {{ form_label(form.pValue, "Nouvelle valeur", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+        {{ form_errors(form.pValue) }}
+
+        <div class="col-sm-8">
+          {{ form_widget(form.pValue, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+
+      {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+    </div>
+
+    
+    {{ form_rest(form) }}
+    
+    {{ form_end(form) }}
+
+
+  </div>
+</div>
+

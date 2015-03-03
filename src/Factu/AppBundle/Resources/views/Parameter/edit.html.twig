@@ -1,0 +1,20 @@
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Edition du parametre - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Edition du paramètre</h2>
+
+  {{ include("FactuAppBundle:Parameter:form.html.twig") }}
+
+  <p>
+    <a href="{{ path('parameter_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour liste
+    </a>
+  </p>
+
+{% endblock %}

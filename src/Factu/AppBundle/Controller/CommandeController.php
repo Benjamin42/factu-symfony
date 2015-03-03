@@ -100,10 +100,14 @@ class CommandeController extends Controller
 		      ->getManager()
 		      ->getRepository('FactuAppBundle:Commande')
 		      ->getNbCommandeToDelivery();
-		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver);
+		    $nbBdlToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Bdl')
+		      ->getNbBdlToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver + $nbBdlToDeliver);
 
-			    return $this->redirect($this->generateUrl('commande_view', array('id' => $commande->getId())));
-		    }
+			return $this->redirect($this->generateUrl('commande_view', array('id' => $commande->getId())));
+		}
 
 	    return $this->render('FactuAppBundle:Commande:add.html.twig', array(
 	      'form' => $form->createView(),
@@ -142,7 +146,11 @@ class CommandeController extends Controller
 		      ->getManager()
 		      ->getRepository('FactuAppBundle:Commande')
 		      ->getNbCommandeToDelivery();
-		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver);
+		    $nbBdlToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Bdl')
+		      ->getNbBdlToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver + $nbBdlToDeliver);
 
 		    return $this->redirect($this->generateUrl('commande_view', array('id' => $commande->getId())));
 	    }

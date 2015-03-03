@@ -122,11 +122,27 @@ class BdlController extends Controller
 		$form = $this->get('form.factory')->create(new BdlType, $bdl);
 
 	    if ($form->handleRequest($request)->isValid()) {
+	    	if ($bdl->getDateDelivered() == null) {
+	    		$bdl->setIsDelivered(False);
+	    	} else {
+	    		$bdl->setIsDelivered(True);
+	    	}
 	    	$em = $this->getDoctrine()->getManager();
 		    $em->persist($bdl);
 		    $em->flush();
 
 		    $request->getSession()->getFlashBag()->add('notice', 'Bon de livraison bien enregistré.');
+
+		    // On met a jour le badge compteur de nombre de commande à livrer
+		    $nbCmdToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Commande')
+		      ->getNbCommandeToDelivery();
+		    $nbBdlToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Bdl')
+		      ->getNbBdlToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver + $nbBdlToDeliver);
 
 		    return $this->redirect($this->generateUrl('bdl_view', array('id' => $bdl->getId())));
 	    }
@@ -152,12 +168,28 @@ class BdlController extends Controller
 		$form = $this->get('form.factory')->create(new BdlType, $bdl);
 
 		if ($form->handleRequest($request)->isValid()) {
+	    	if ($bdl->getDateDelivered() == null) {
+	    		$bdl->setIsDelivered(False);
+	    	} else {
+	    		$bdl->setIsDelivered(True);
+	    	}
 	    	$em = $this->getDoctrine()->getManager();
 		    $em->persist($bdl);
 		    $em->flush();
 
 		    $request->getSession()->getFlashBag()->add('notice', 'Bon de livraison bien enregistré.');
 
+		    // On met a jour le badge compteur de nombre de commande à livrer
+		    $nbCmdToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Commande')
+		      ->getNbCommandeToDelivery();
+		    $nbBdlToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Bdl')
+		      ->getNbBdlToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver + $nbBdlToDeliver);
+		    
 		    return $this->redirect($this->generateUrl('bdl_view', array('id' => $bdl->getId())));
 	    }
 

@@ -17,15 +17,21 @@ class MapDeliveryController extends Controller
 	    $listCommandes = $this->getDoctrine()
 	      ->getManager()
 	      ->getRepository('FactuAppBundle:Commande')
-	      ->getCommandeToDelivery()
-	    ;
+	      ->getCommandeToDelivery();
+
+	    $listBdls = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:Bdl')
+	      ->getBdlToDelivery();
 
 	    $parameterRepo = $this->getDoctrine()
 	      ->getManager()
 	      ->getRepository('FactuAppBundle:Parameter');
 
     	return $this->render('FactuAppBundle:MapDelivery:index.html.twig', array(
-	      'listCommandes' => $listCommandes, 'parameterRepo' => $parameterRepo
+	      'listCommandes' => $listCommandes, 
+	      'listBdls' => $listBdls,
+	      'parameterRepo' => $parameterRepo
 	    ));
     }
 

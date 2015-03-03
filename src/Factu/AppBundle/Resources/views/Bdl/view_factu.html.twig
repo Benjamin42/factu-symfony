@@ -121,6 +121,8 @@
 						<td class="center">
 							{% if price == null %}
 								<span class="label label-danger">Pas de prix</span>
+							{% elseif bdl.toDelivered %}	
+								{{ price.unitPriceLiv | number_format(2, '.', ' ') }}&euro;
 							{% else %}	
 								{{ price.unitPrice | number_format(2, '.', ' ') }}&euro;
 							{% endif %}

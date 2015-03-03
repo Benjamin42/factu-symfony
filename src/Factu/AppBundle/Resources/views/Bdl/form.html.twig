@@ -54,7 +54,31 @@
           </div>
         </div>
 
+        
+        {# A livrer ? #}
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-10">
+            <div class="checkbox">
+              <label>
+                {{ form_widget(form.toDelivered) }} A livrer ?
+              </label>
+            </div>
+          </div>
+        </div>
 
+        {# Is Delivered #}
+        <div class="form-group">
+          <div class="col-sm-3 control-label" >
+            <label>
+            {{ form_widget(form.isDelivered) }} Livrée ?
+            </label>
+          </div>
+
+          <div class="col-sm-8">
+            {{ form_widget(form.dateDelivered, {'attr': {'class': 'datepicker'}}) }}
+          </div>
+        </div>
+        
       </div>
 
     </div>

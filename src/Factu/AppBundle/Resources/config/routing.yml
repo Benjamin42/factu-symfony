@@ -149,6 +149,10 @@ parameter_home:
     path:      /parameter
     defaults:  { _controller: FactuAppBundle:Parameter:index }
 
+parameter_edit:
+    path:      /parameter/edit/{id}
+    defaults:  { _controller: FactuAppBundle:Parameter:edit }
+
 # Import Client
 import_csv_home:
     path:      /import/csv
