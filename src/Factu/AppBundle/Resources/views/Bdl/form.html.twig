@@ -96,6 +96,7 @@
                 <th>Produit</th>
                 <th>Qty</th>
                 <th>Qty Cadeau</th>
+                <th>Prix forcé</th>
                 <th>&nbsp;</th>
               </tr>
             </thead>
@@ -108,8 +109,9 @@
             {% for commandeProduct in form.commandeProducts %}
                 <tr>
                   <td>{{ form_widget(commandeProduct.product) }}</td>
-                  <td>{{ form_widget(commandeProduct.qty) }}</td>
-                  <td>{{ form_widget(commandeProduct.qtyGift) }}</td>
+                  <td>{{ form_widget(commandeProduct.qty, {'attr': {'size': '10'}}) }}</td>
+                  <td>{{ form_widget(commandeProduct.qtyGift, {'attr': {'size': '10'}}) }}</td>
+                  <td>{{ form_widget(commandeProduct.forcedPrice, {'attr': {'size': '10'}}) }}</td>
                 </tr>
             {% endfor %}
             </tbody>

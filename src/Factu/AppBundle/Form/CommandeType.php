@@ -5,6 +5,7 @@ namespace Factu\AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Factu\AppBundle\Entity\BdlRepository;
 
 class CommandeType extends AbstractType
 {
@@ -18,6 +19,10 @@ class CommandeType extends AbstractType
             ->add('numFactu',           'number', array('required' => false))
             ->add('bdl', 'entity', array(
               'class'    => 'FactuAppBundle:Bdl',
+              'query_builder' => function(BdlRepository $er) {
+                  return $er->createQueryBuilder('u')
+                      ->orderBy('u.dateBdl', 'DESC');
+              },
               'property' => 'formatedLabel',
               'multiple' => false,
               'required' => false

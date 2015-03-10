@@ -3,7 +3,7 @@
 {% block body %}
   <div class="row">
 
-	<h4>Facture <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
+	<h4 class="no-print">Facture <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
 
 		<!-- Modal -->
 		<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -21,6 +21,15 @@
 		      			<li>En fonction de la date de facturation de la commande</li>
 		      			<li>En fonction de la date du bon de livraison</li>
 		      		</ul>
+		      	</p>
+
+		      	<p>De plus, il est possible de forcé un prix.
+		      		<ul>
+		      			<li>Si le prix est forcé sur le BdL, celui-ci sera pris en compte</li>
+		      			<li>Si le prix est forcé sur la commande, celui-ci sera pris en compte</li>
+		      			<li>Si le prix est forcé sur les 2, celui de la commande sera pris en compte</li>
+		      		</ul>
+
 		      	</p>
 
 		      	<p>La TVA ainsi que les conditions générales de vente sont paramétrables sur l'écran des paramètres.</p>
@@ -90,12 +99,16 @@
     <div class="col-md-12">
     	{{ parameterRepo.findOneByPName('adresse_factu_rue').pValue }}<br/>
     	{{ parameterRepo.findOneByPName('adresse_factu_cp_ville').pValue }}<br/>
-    	{{ parameterRepo.findOneByPName('tel').pValue }}
+    	{{ parameterRepo.findOneByPName('tel').pValue }} / {{ parameterRepo.findOneByPName('port').pValue }}
 	</div>
 
 	<div class="col-md-12">
 		<center>
-			<h4>Facture N° {{ commande.numFactu }}</h4>
+			{% if commande.bdl != null %}
+				<h4>Bon de Livraison N° {{ commande.bdl.numBdl }}</h4>
+			{% else %}
+				<h4>Facture N° {{ commande.numFactu }}</h4>
+			{% endif %}
 			<h4>C.R.D</h4>
 		</center>
 	</div>

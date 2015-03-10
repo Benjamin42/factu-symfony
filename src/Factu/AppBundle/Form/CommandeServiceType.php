@@ -5,6 +5,7 @@ namespace Factu\AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Factu\AppBundle\Entity\ServiceRepository;
 
 class CommandeServiceType extends AbstractType
 {
@@ -18,6 +19,10 @@ class CommandeServiceType extends AbstractType
             ->add('amt')
             ->add('service', 'entity', array(
               'class'    => 'FactuAppBundle:Service',
+              'query_builder' => function(ServiceRepository $er) {
+                  return $er->createQueryBuilder('u')
+                      ->where('u.active=true');
+              },
               'property' => 'title',
               'multiple' => false
             ))

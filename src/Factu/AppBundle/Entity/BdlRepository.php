@@ -29,6 +29,18 @@ class BdlRepository extends EntityRepository
 	    }
 	}
 
+	public function getLastAdded() {
+	    $query = $this->getEntityManager()
+	        ->createQuery('SELECT b FROM FactuAppBundle:Bdl b ORDER BY b.id desc')
+	        ->setMaxResults(3);
+	        
+	    try {
+	    	return $query->getResult();
+	    } catch (\Doctrine\ORM\NoResultException $e) {
+	        return 1;
+	    }
+	}
+
 	public function getBdlToDelivery() {
 	    $query = $this->getEntityManager()
 	        ->createQuery('SELECT c FROM FactuAppBundle:Bdl c WHERE c.toDelivered = 1 AND c.isDelivered = 0');

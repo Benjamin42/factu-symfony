@@ -29,6 +29,18 @@ class CommandeRepository extends EntityRepository
 	    }
 	}
 
+	public function getLastAdded() {
+	    $query = $this->getEntityManager()
+	        ->createQuery('SELECT c FROM FactuAppBundle:Commande c ORDER BY c.id desc')
+	        ->setMaxResults(3);
+	        
+	    try {
+	    	return $query->getResult();
+	    } catch (\Doctrine\ORM\NoResultException $e) {
+	        return 1;
+	    }
+	}
+
 	public function getCommandeToDelivery() {
 	    $query = $this->getEntityManager()
 	        ->createQuery('SELECT c FROM FactuAppBundle:Commande c WHERE c.toDelivered = 1 AND c.isDelivered = 0');
@@ -63,6 +75,20 @@ class CommandeRepository extends EntityRepository
 	       ->setParameter('month', $month);
 
 	    $qb->orderBy('c.dateFactu', 'ASC');
+
+	   	$listResult = $qb->getQuery()->getResult();
+	    return $listResult;
+	}
+
+	public function findAllWithSpecificBdl($bdl) {
+
+	    $qb = $this->createQueryBuilder('c');
+	    $qb->select('c')
+	       ->where('c.bdl = :bdl');
+
+	    $qb->setParameter('bdl', $bdl);
+
+	    $qb->orderBy('c.dateFactu', 'DESC');
 
 	   	$listResult = $qb->getQuery()->getResult();
 	    return $listResult;

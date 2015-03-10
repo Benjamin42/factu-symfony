@@ -53,6 +53,13 @@ class CommandeProduct
      */
     private $qtyGift;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="forced_price", type="float", nullable=true)
+     */
+    private $forcedPrice;
+
     public function __construct()
     {
         $this->qty = 0;
@@ -113,6 +120,29 @@ class CommandeProduct
     public function getQtyGift()
     {
         return $this->qtyGift;
+    }
+
+    /**
+     * Set forcedPrice
+     *
+     * @param float $forcedPrice
+     * @return CommandeProduit
+     */
+    public function setForcedPrice($forcedPrice)
+    {
+        $this->forcedPrice = $forcedPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get forcedPrice
+     *
+     * @return float 
+     */
+    public function getForcedPrice()
+    {
+        return $this->forcedPrice;
     }
 
     /***************************************************************************
@@ -193,8 +223,8 @@ class CommandeProduct
     }
 
     public function getLastPrice() {
-       $date = null;
-
+        $date = null;
+        
         if ($this->bdl != null) {
             $date = $this->bdl->getDateBdl();
         } else if ($this->commande != null) {
@@ -205,7 +235,25 @@ class CommandeProduct
             }
         }
 
-        $price = $this->product->getLastPrice($date);
+        $price = null;
+        if ($this->forcedPrice != null) {
+            $price = new Price();
+            $price->setUnitPrice($this->forcedPrice);
+            $price->setUnitPriceLiv($this->forcedPrice);   
+        } else if ($this->commande->getBdl() != null) {
+            foreach ($this->commande->getBdl()->getCommandeProducts() as $commandeProduct) {
+                if ($commandeProduct->getProduct()->getId() == $this->product->getId() && $commandeProduct->getForcedPrice() != null) {
+                    $price = new Price();
+                    $price->setUnitPrice($commandeProduct->getForcedPrice());
+                    $price->setUnitPriceLiv($commandeProduct->getForcedPrice()); 
+                    break;
+                }
+            }
+        }
+
+        if ($price == null) {
+            $price = $this->product->getLastPrice($date);
+        }
         return $price;   
     }
 
@@ -214,11 +262,20 @@ class CommandeProduct
 
         $amt = 0;
         if ($price != null) {
-            if ($this->commande != null && $this->commande->getToDelivered() == True) {
-                $amt = $this->qty * $price->getUnitPriceLiv();
-            } else {
-                $amt = $this->qty * $price->getUnitPrice();
+            if ($this->commande != null) {
+                if ($this->commande->getToDelivered() == True) {
+                    $amt = $this->qty * $price->getUnitPriceLiv();
+                } else {
+                    $amt = $this->qty * $price->getUnitPrice();
+                }
+            } else if ($this->bdl != null) {
+                if ($this->bdl->getToDelivered() == True) {
+                    $amt = $this->qty * $price->getUnitPriceLiv();
+                } else {
+                    $amt = $this->qty * $price->getUnitPrice();
+                }
             }
+
         }
         return $amt;
     }

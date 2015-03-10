@@ -9,6 +9,7 @@ use Factu\AppBundle\DTO\BdlCommandeDto;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -35,9 +36,17 @@ class BdlController extends Controller
 	      ->getRepository('FactuAppBundle:Bdl')
 	      ->find($id);
 
+	    $listCommandes = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:Commande')
+	      ->findAllWithSpecificBdl($bdl);
+
+	    $listBdlDto = $this->calcStock($bdl);
 
     	return $this->render('FactuAppBundle:Bdl:view.html.twig', array(
-	      'bdl' => $bdl
+	      'bdl' => $bdl,
+	      'listBdlDto' => $listBdlDto,
+	      'listCommandes' => $listCommandes
 	    ));
     }
 
@@ -70,6 +79,15 @@ class BdlController extends Controller
 	      ->getRepository('FactuAppBundle:Bdl')
 	      ->find($id);
 
+	    $listBdlDto = $this->calcStock($bdl);
+
+    	return $this->render('FactuAppBundle:Bdl:view_cmd.html.twig', array(
+	      'listBdlDto' => $listBdlDto
+	    ));
+    }
+
+
+    private function calcStock($bdl) {
 	    $listBdlDto = array();
 	    foreach ($bdl->getCommandeProducts() as $commandeProduct) {
 	    	$qty = $commandeProduct->getQty();
@@ -79,7 +97,6 @@ class BdlController extends Controller
 	    		$listBdlDto[$product->getId()] = $dto;
 	    	}
 	    }
-
 
 	    foreach ($bdl->getCommandes() as $commande) {
 	    	foreach ($commande->getCommandeProducts() as $commandeProduct) {
@@ -92,9 +109,20 @@ class BdlController extends Controller
 	    	}
 	    }
 
-    	return $this->render('FactuAppBundle:Bdl:view_cmd.html.twig', array(
-	      'listBdlDto' => $listBdlDto
-	    ));
+	    return $listBdlDto;
+    }
+
+    public function viewDataAjaxAction(Request $request) {
+  		$id = $request->query->get('id');
+
+	    $bdl = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:Bdl')
+	      ->find($id);
+
+		$response = array("success" => true, "dateBdl" => $bdl->getDateBdl()->format('d/m/Y'));
+	
+		return new Response(json_encode($response)); 
     }
 
 	/**
@@ -221,6 +249,18 @@ class BdlController extends Controller
 		if ($form->handleRequest($request)->isValid()) {
 		  $em->remove($bdl);
 		  $em->flush();
+
+		    // On met a jour le badge compteur de nombre de commande à livrer
+		    $nbCmdToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Commande')
+		      ->getNbCommandeToDelivery();
+		    $nbBdlToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Bdl')
+		      ->getNbBdlToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver + $nbBdlToDeliver);
+		    
 
 		  $request->getSession()->getFlashBag()->add('info', "Le bon de livraison a bien été supprimée.");
 

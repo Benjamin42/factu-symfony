@@ -11,10 +11,87 @@
       </p>
     
     	<div class="well">
-        <p><b>Numéro de bdl : </b>{{ bdl.numBdl }}<p>
-        <p><b>Client : </b>{{ bdl.client.formatedLabel }}<p>
-        <p><b>Date bdl : </b>{{ bdl.dateBdl | date('d/m/Y') }}<p>
-        <p><b>Date livraison : </b>{{ bdl.dateDelivered ? bdl.dateDelivered | date('d/m/Y') : '' }}<p>
+
+        <div class="row">
+          <div class="col-md-4">
+
+            <p><b>Numéro de bdl : </b>{{ bdl.numBdl }}<p>
+            <p><b>Client : </b>{{ bdl.client.formatedLabel }}<p>
+            <p><b>Date bdl : </b>{{ bdl.dateBdl | date('d/m/Y') }}<p>
+            <p><b>Date livraison : </b>{{ bdl.dateDelivered ? bdl.dateDelivered | date('d/m/Y') : '' }}<p>
+
+          </div>
+
+          <div class="col-md-8">
+
+            <div role="tabpanel">
+
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="stock" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><div class="glyphicon glyphicon-th-list"></div>&nbsp;Stocks</a></li>
+                <li role="graph"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><div class="glyphicon glyphicon-stats"></div>&nbsp;Factures</a></li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                  <br/>
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Produit</th>
+                        <th>Qty Initiale</th>
+                        <th>Qty Restante</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for dto in listBdlDto %}
+                      <tr>
+                        <td>{{ dto.product.title }}</td>
+                        <td>{{ dto.qtyBefore }}</td>
+                        <td><b>{{ dto.qty }}</b></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="profile">
+                  
+                  <br/>    
+
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th>&nbsp;</th>
+                        <th>Num Factu</th>
+                        <th>Client</th>
+                        <th>Date Factu</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for commande in listCommandes %}
+                        <tr>
+                          <td style="width:20px;"><a href="{{ path('commande_view', {'id': commande.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+                          <td>{{ commande.numFactu }}</td>
+                          <td>{{ commande.client.formatedLabel }}</td>
+                          <td>{{ commande.dateFactu != null ? commande.dateFactu | date('d/m/Y') : '-' }}</td>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+
+
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+        </div>
 
         <hr>
 
@@ -28,6 +105,7 @@
                   <th>Produit</th>
                   <th>Qty</th>
                   <th>Qty Cadeau</th>
+                  <th>Prix Forcé</th>
                 </tr>
               </thead>
               <tbody>
@@ -36,6 +114,11 @@
                   <td>{{ commandeProduit.product.title }}</td>
                   <td>{{ commandeProduit.qty }}</td>
                   <td>{{ commandeProduit.qtyGift }}</td>
+                  <td>
+                    {% if commandeProduit.forcedPrice != null %}
+                      {{ commandeProduit.forcedPrice }}&euro;
+                      {% endif %}
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>

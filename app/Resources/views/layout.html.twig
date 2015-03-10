@@ -20,7 +20,7 @@
         display: none;
       }
 
-      #table-stats span, #table span {
+      #table-stats span, #table span , #table-commande span , #table-bdl span {
           display:none; 
       }
 
@@ -92,9 +92,15 @@
           }
         };
 
-      var dataTableStatsParam = jQuery.extend({}, dataTableDefaultParam);;
+      var dataTableStatsParam = jQuery.extend({}, dataTableDefaultParam);
       dataTableStatsParam["filter"] = false;
       dataTableStatsParam["paging"] = false;
+
+      var dataTableCommandeParam = jQuery.extend({}, dataTableDefaultParam);
+      dataTableCommandeParam["order"] = [[ 4, "desc" ]];
+
+      var dataTableBdlParam = jQuery.extend({}, dataTableDefaultParam);
+      dataTableBdlParam["order"] = [[ 4, "desc" ]];
 
       $(document).ready(function(){
           $('.datepicker').datepicker({
@@ -114,6 +120,10 @@
           $('#table').DataTable(dataTableDefaultParam);
 
           $('#table-stats').DataTable(dataTableStatsParam);
+
+          $('#table-commande').DataTable(dataTableCommandeParam);
+
+          $('#table-bdl').DataTable(dataTableBdlParam);
 
       });
     </script>
@@ -146,7 +156,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Facturation <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="{{ path('commande_home') }}">Commande</a></li>
+              <li><a href="{{ path('commande_home') }}">Facture</a></li>
               <li><a href="{{ path('bdl_home') }}">Bon de livraison</a></li>
             </ul>
           </li>
@@ -159,15 +169,15 @@
             </ul>
           </li>
 
+          {% if app.session.get('nbCmdToDeliver') > 0 %}
           <li class="">
               <a href="{{ path('map_delivery') }}">
                 <div class="glyphicon glyphicon-globe"></div>
-                  &nbsp;Carte des livraisons
-                  {% if app.session.get('nbCmdToDeliver') > 0 %}
-                    &nbsp;<span class="badge">{{ app.session.get('nbCmdToDeliver') }}</span>
-                  {% endif %}
+                  &nbsp;Carte des livraisons&nbsp;<span class="badge">{{ app.session.get('nbCmdToDeliver') }}</span>
+                  
                 </a>
           </li>
+          {% endif %}
 
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><div class="glyphicon glyphicon-envelope"></div>&nbsp;Mailing <span class="caret"></span></a>

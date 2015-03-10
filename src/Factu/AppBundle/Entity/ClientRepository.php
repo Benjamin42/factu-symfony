@@ -28,4 +28,16 @@ class ClientRepository extends EntityRepository
 	        return null;
 	    }
 	}
+
+	public function getLastAdded() {
+	    $query = $this->getEntityManager()
+	        ->createQuery('SELECT c FROM FactuAppBundle:Client c ORDER BY c.id desc')
+	        ->setMaxResults(3);
+	        
+	    try {
+	    	return $query->getResult();
+	    } catch (\Doctrine\ORM\NoResultException $e) {
+	        return 1;
+	    }
+	}
 }

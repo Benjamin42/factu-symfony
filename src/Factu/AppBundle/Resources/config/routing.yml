@@ -117,6 +117,10 @@ bdl_view_cmd_ajax:
     path:      /bdl/view_cmd_ajax
     defaults:  { _controller: FactuAppBundle:Bdl:viewCmdAjax }
 
+bdl_view_data_ajax:
+    path:      /bdl/view_data_ajax
+    defaults:  { _controller: FactuAppBundle:Bdl:viewDataAjax }
+
 bdl_edit:
     path:      /bdl/edit/{id}
     defaults:  { _controller: FactuAppBundle:Bdl:edit }

@@ -32,6 +32,7 @@
                   <th>Produit</th>
                   <th>Qty</th>
                   <th>Qty Cadeau</th>
+                  <th>Prix Forcé</th>
                 </tr>
               </thead>
               <tbody>
@@ -40,7 +41,12 @@
                   <td>{{ commandeProduit.product.title }}</td>
                   <td>{{ commandeProduit.qty }}</td>
                   <td>{{ commandeProduit.qtyGift }}</td>
-                </tr>
+                  <td>
+                    {% if commandeProduit.forcedPrice != null %}
+                      {{ commandeProduit.forcedPrice }}&euro;
+                      {% endif %}
+                  </td>
+                </tr> 
                 {% endfor %}
               </tbody>
             </table>

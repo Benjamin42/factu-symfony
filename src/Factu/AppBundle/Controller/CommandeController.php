@@ -181,6 +181,17 @@ class CommandeController extends Controller
 		  $em->remove($commande);
 		  $em->flush();
 
+		    // On met a jour le badge compteur de nombre de commande à livrer
+		    $nbCmdToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Commande')
+		      ->getNbCommandeToDelivery();
+		    $nbBdlToDeliver = $this->getDoctrine()
+		      ->getManager()
+		      ->getRepository('FactuAppBundle:Bdl')
+		      ->getNbBdlToDelivery();
+		    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver + $nbBdlToDeliver);
+
 		  $request->getSession()->getFlashBag()->add('info', "La commande a bien été supprimée.");
 
 		  return $this->redirect($this->generateUrl('commande_home'));

@@ -3,11 +3,12 @@
 {% block body %}
 <h4>Liste des commandes</h4>
 
-	<table id="table" class="table table-striped table-hover">
+	<table id="table-commande" class="table table-striped table-hover">
 		<thead>
 			<tr>
 				<th>&nbsp;</th>
 				<th>Num Factu</th>
+				<th>Num Bdl</th>
 				<th>Client</th>
 				<th>Date Factu</th>
 				<th>Date Livraison</th>
@@ -22,6 +23,13 @@
 	      <tr>
 	      	<td style="width:20px;"><a href="{{ path('commande_view', {'id': commande.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
 	      	<td>{{ commande.numFactu }}</td>
+	      	<td>
+	      	{% if commande.bdl != null %}
+	      		<a href="{{ path('bdl_view', {'id': commande.bdl.id}) }}">{{ commande.bdl.numBdl}}</a>
+	      	{% else %}
+	      		-
+	      	{% endif %}
+	      	</td>
 	      	<td>{{ commande.client.formatedLabel }}</td>
 	      	<td>
 	      	{% if commande.dateFactu != null %}

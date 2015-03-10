@@ -23,7 +23,25 @@ class AccueilController extends Controller
 	      ->getNbCommandeToDelivery();
 	    $request->getSession()->set('nbCmdToDeliver', $nbCmdToDeliver);
 
+	    $listClient = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:Client')
+	      ->getLastAdded();
+
+	    $listBdl = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:Bdl')
+	      ->getLastAdded();
+
+	    $listCommande = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:Commande')
+	      ->getLastAdded();
+
     	return $this->render('FactuAppBundle:Accueil:index.html.twig', array(
+    		"listClient" => $listClient,
+    		"listBdl" => $listBdl,
+    		"listCommande" => $listCommande,
 
 	    ));
     }

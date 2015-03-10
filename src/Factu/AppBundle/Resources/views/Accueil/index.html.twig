@@ -11,9 +11,107 @@
     {% endfor %}
   </p>
   
-  	<h3>Accueil</h3>
+  	<h3>Accueil <small>(les derniers ajouts)</small></h3>
 
-	<p>Bienvenue {{ app.user.username }} </p>
+	<p>
+
+		<center><h4>Facture</h4></center>
+
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>&nbsp;</th>
+					<th>Num Factu</th>
+					<th>Num Bdl</th>
+					<th>Client</th>
+					<th>Date Factu</th>
+					<th>Date Livraison</th>
+					<th>Date Paiement</th>
+					<th>Montant</th>
+				</tr>
+			</thead>
+			<tbody>
+		    {% for commande in listCommande %}
+		      <tr>
+		      	<td style="width:20px;"><a href="{{ path('commande_view', {'id': commande.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+		      	<td>{{ commande.numFactu }}</td>
+		      	<td>{% if commande.bdl != null %}<a href="{{ path('bdl_view', {'id': commande.bdl.id}) }}">{{ commande.bdl.numBdl}}</a>{% else %}-{% endif %}</td>
+		      	<td>{{ commande.client.formatedLabel }}</td>
+		      	<td>{{ commande.dateFactu != null ? commande.dateFactu | date('d/m/Y') : '-' }}</td>
+		      	<td>{{ commande.dateDelivered != null ? commande.dateDelivered | date('d/m/Y') : '-' }}</td>
+		      	<td>{{ commande.datePayed != null ? commande.datePayed | date('d/m/Y') : '-' }}</td>
+		      	<td>{{ commande.calcMontantTTC | number_format(2, '.', ' ') }}&euro;</td>
+		    {% endfor %}
+			</tbody>
+		</table>
+
+		<hr>
+
+  		<center><h4>Bon de livraison</h4></center>
+
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>&nbsp;</th>
+					<th>Num Bdl</th>
+					<th>Titre</th>
+					<th>Client</th>
+					<th>Date Bdl</th>
+					<th>Date Livraison</th>
+				</tr>
+			</thead>
+			<tbody>
+		    {% for bdl in listBdl %}
+		      <tr>
+		      	<td style="width:20px;"><a href="{{ path('bdl_view', {'id': bdl.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+		      	<td>{{ bdl.numBdl }}</td>
+		      	<td>{{ bdl.title }}</td>
+		      	<td>{{ bdl.client.formatedLabel }}</td>
+		      	<td>{{ bdl.dateBdl != null ? bdl.dateBdl | date('d/m/Y') : '-' }}</td>
+		      	<td>{{ bdl.dateDelivered != null ? bdl.dateDelivered | date('d/m/Y') : '-' }}</td>
+		    {% endfor %}
+			</tbody>
+		</table>
+
+		<hr>
+
+
+
+		<center><h4>Client</h4></center>
+
+		<table class="table table-striped table-hover">
+			<thead>
+				<tr>
+					<th>&nbsp;</th>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>Prénom</th>
+					<th>Rue</th>
+					<th>Ville</th>
+					<th>Pays</th>
+				</tr>
+			</thead>
+
+			<tbody>
+
+		    {% for client in listClient %}
+		      <tr>
+		      	<td style="width:20px;"><a href="{{ path('client_view', {'id': client.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+		      	<td>{{ client.id }}</td>
+		      	<td>{{ client.nom }}</td>
+		      	<td>{{ client.prenom }}</td>
+		      	<td>{{ client.rue }}</td>
+		      	<td>{{ client.ville }}</td>
+		      	<td>{{ client.pays.name }}</td>
+		    {% endfor %}
+
+			</tbody>
+
+		</table>
+
+	</p>
+
+
 
 
 {% endblock %}

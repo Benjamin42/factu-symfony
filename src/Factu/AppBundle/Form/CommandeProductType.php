@@ -5,6 +5,7 @@ namespace Factu\AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Factu\AppBundle\Entity\ProductRepository;
 
 class CommandeProductType extends AbstractType
 {
@@ -15,11 +16,16 @@ class CommandeProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('qty',        'number', array('required' => false))
-            ->add('qtyGift',    'number', array('required' => false))
-            ->add('product',    'entity', array(
+            ->add('qty',          'number', array('required' => false))
+            ->add('qtyGift',      'number', array('required' => false))
+            ->add('forcedPrice',  'number', array('required' => false))
+            ->add('product',      'entity', array(
               'class'    => 'FactuAppBundle:Product',
-              'property' => 'title',
+              'query_builder' => function(ProductRepository $er) {
+                  return $er->createQueryBuilder('u')
+                      ->where('u.active=true');
+              },
+              'property' =>       'title',
               'multiple' => false
             ))
         ;

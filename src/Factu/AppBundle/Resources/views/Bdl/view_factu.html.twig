@@ -3,7 +3,7 @@
 {% block body %}
   <div class="row">
 
-	<h4>Bon de livraison <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
+	<h4 class="no-print">Bon de livraison <a href="#"><span class="badge" data-toggle="modal" data-target="#helpModal" >?</span></a></h4>
 
 	<!-- Modal -->
 	<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -89,7 +89,7 @@
     <div class="col-md-12">
     	{{ parameterRepo.findOneByPName('adresse_factu_rue').pValue }}<br/>
     	{{ parameterRepo.findOneByPName('adresse_factu_cp_ville').pValue }}<br/>
-    	{{ parameterRepo.findOneByPName('tel').pValue }}
+    	{{ parameterRepo.findOneByPName('tel').pValue }} / {{ parameterRepo.findOneByPName('port').pValue }}
 	</div>
 
 	<div class="col-md-12">
