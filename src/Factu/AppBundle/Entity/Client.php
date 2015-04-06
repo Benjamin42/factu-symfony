@@ -107,14 +107,14 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="bat", type="string", length=255)
+     * @ORM\Column(name="bat", type="string", length=255, nullable=true)
      */
     private $bat;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="bp", type="string", length=255)
+     * @ORM\Column(name="bp", type="string", length=255, nullable=true)
      */
     private $bp;
 
