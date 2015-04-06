@@ -31,7 +31,7 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="num_tva", type="string", length=255)
+     * @ORM\Column(name="num_tva", type="string", length=255, nullable=true)
      */
     private $numTva;
 
