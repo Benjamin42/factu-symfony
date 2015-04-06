@@ -100,7 +100,7 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="rue", type="string", length=255)
+     * @ORM\Column(name="rue", type="string", length=255, nullable=true)
      */
     private $rue;
 
@@ -128,7 +128,7 @@ class Client
     /**
      * @var string
      *
-     * @ORM\Column(name="ville", type="string", length=255)
+     * @ORM\Column(name="ville", type="string", length=255, nullable=true)
      */
     private $ville;
 

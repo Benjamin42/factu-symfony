@@ -30,11 +30,11 @@ class ClientType extends AbstractType
             ->add('fax',            'text', array('required' => false))
             ->add('email',          'email', array('required' => false))
             ->add('commentaire',    'textarea', array('required' => false))
-            ->add('rue',            'text')
+            ->add('rue',            'text', array('required' => false))
             ->add('bat',            'text', array('required' => false))
             ->add('bp',             'text', array('required' => false))
             ->add('codePostal',     'text', array('required' => false))
-            ->add('ville',          'text')
+            ->add('ville',          'text', array('required' => false))
             ->add('pays', 'entity', array(
               'class'    => 'FactuAppBundle:Country',
               'property' => 'name',

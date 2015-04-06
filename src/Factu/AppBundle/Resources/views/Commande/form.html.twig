@@ -201,19 +201,21 @@
 
       initElementForm(collectionServiceHolder, addCommandeServicesLink, newLinkService);
 
-      bdlSelected($('#factu_appbundle_commande_bdl').val());
+      bdlSelected($('#factu_appbundle_commande_bdl').val(), false);
 
       $('#factu_appbundle_commande_bdl').on('change', function() { 
-        bdlSelected($(this).val());
+        bdlSelected($(this).val(), true);
       });
   });
 
-  function bdlSelected(idBdl) {
+  function bdlSelected(idBdl, resetCheckbox) {
     if (idBdl == "") {
       $("#bdlContent").html("");
-      $("#factu_appbundle_commande_toDelivered").prop('checked', false);
-      $("#factu_appbundle_commande_isDelivered").prop('checked', false);
-      $("#factu_appbundle_commande_dateDelivered").val("");
+      if (resetCheckbox) {
+        $("#factu_appbundle_commande_toDelivered").prop('checked', false);
+        $("#factu_appbundle_commande_isDelivered").prop('checked', false);
+        $("#factu_appbundle_commande_dateDelivered").val("");
+      }
     } else {
       $("#bdlContent").html('<br/><br/><br/><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"><span>Chargement</span></div>');
 
