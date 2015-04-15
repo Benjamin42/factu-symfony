@@ -240,7 +240,7 @@ class CommandeProduct
             $price = new Price();
             $price->setUnitPrice($this->forcedPrice);
             $price->setUnitPriceLiv($this->forcedPrice);   
-        } else if ($this->commande->getBdl() != null) {
+        } else if ($this->commande != null && $this->commande->getBdl() != null) {
             foreach ($this->commande->getBdl()->getCommandeProducts() as $commandeProduct) {
                 if ($commandeProduct->getProduct()->getId() == $this->product->getId() && $commandeProduct->getForcedPrice() != null) {
                     $price = new Price();
