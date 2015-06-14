@@ -22,6 +22,18 @@
       </div>
 
 
+      {# Category #}
+      <div class="form-group">
+        {{ form_label(form.category, "Catégorie", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+
+        {{ form_errors(form.category) }}
+
+        <div class="col-sm-8">
+          {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+        </div>
+      </div>
+
+
       {# Comment #}
       <div class="form-group">
         {{ form_label(form.comment, "Commentaire", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
@@ -117,53 +129,38 @@
 
 <script>
   var collectionPriceHolder = $('tbody.prices');
-
   var addPricesLink = $('<a href="#"><div class="glyphicon glyphicon-plus-sign"></div> Ajouter un tarif</a>');
-
   var newLinkPrice = $('<tr></tr>').append(addPricesLink);
-
   $(document).ready(function() {
       initElementForm(collectionPriceHolder, addPricesLink, newLinkPrice);
   });
-
-
   function initElementForm(collectionHolder, addLink, newLink) {
       collectionHolder.find('tr').each(function() {
           addCommandeElementFormDeleteLink($(this));
       });
       collectionHolder.append(newLink);
-
       addLink.on('click', function(e) {
           e.preventDefault();
-
           addCommandeElementForm(collectionHolder, newLink);
       });
   }
-
   function addCommandeElementForm(collectionHolder, newLink) {
       var prototype = collectionHolder.attr('data-prototype');
-
       var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
-
       var $newFormLi = $('<tr></tr>').append(newForm);
       addCommandeElementFormDeleteLink($newFormLi);
       newLink.before($newFormLi);
-
           $('.datepicker').datepicker({
             format: "dd/mm/yyyy",
             autoclose: true
           });
   }
-
   function addCommandeElementFormDeleteLink($formTr) {
       var removeFormA = $('<td><a href="#"><div class="glyphicon glyphicon-minus-sign"></div></a></td>');
       $formTr.append(removeFormA);
-
       removeFormA.on('click', function(e) {
           e.preventDefault();
-
           $formTr.remove();
       });
   }
-
 </script>

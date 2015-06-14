@@ -37,6 +37,12 @@ class Product
     private $comment;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Factu\AppBundle\Entity\ProductCategory")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    protected $category;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean")
@@ -139,6 +145,29 @@ class Product
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \Factu\AppBundle\Entity\ProductCategory $category
+     * @return Product
+     */
+    public function setCategory(\Factu\AppBundle\Entity\ProductCategory $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Factu\AppBundle\Entity\ProductCategory 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 
     /**

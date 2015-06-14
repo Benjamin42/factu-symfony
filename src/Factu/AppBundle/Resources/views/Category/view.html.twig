@@ -1,0 +1,56 @@
+{% extends "::layout.html.twig" %}
+
+{% block body %}
+
+  <p>
+    {% for message in app.session.flashbag.get('notice') %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+  </p>
+
+	<div class="well">
+
+    <h4>Catégorie</h4>
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <p>
+          <b>Libellé : </b>{{ category.title }}
+        <p>
+
+        <p>
+          <b>Suivi Stats : </b>
+          {% if category.isFollowedStat %}
+            <span class="label label-success">Suivi</span>
+          {% else %}
+            <span class="label label-danger">Non Suivi</span>
+          {% endif %}
+        <p>
+
+      </div>
+
+	</div>
+
+
+
+  <p>
+    <a href="{{ path('product_home') }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour à la liste
+    </a>
+
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('category_edit', {'id': category.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-edit"></i>
+      Modifier la catégorie
+    </a>
+    <a href="{{ path('category_delete', {'id': category.id}) }}" class="btn btn-danger">
+      <i class="glyphicon glyphicon-trash"></i>
+      Supprimer la catégorie
+    </a>
+    {% endif %}
+  </p>
+
+
+{% endblock %}

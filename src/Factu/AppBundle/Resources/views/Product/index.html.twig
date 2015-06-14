@@ -1,64 +1,136 @@
 {% extends "::layout.html.twig" %}
 
 {% block body %}
-<h4>Liste des produits</h4>
 
-	<table class="table table-striped table-hover">
-		<thead>
-			<tr>
-				<th style="width:20px;">&nbsp;</th>
-				<th>Libellé</th>
-				<th>Commentaire</th>
-				<th>Prix Unitaire</th>
-				<th>Prix Livraison</th>
-				<th>Date Prix</th>
-				<th style="width:20px;">Actif</th>
-				<th style="width:20px;">Stats</th>
-			</tr>
-		</thead>
+  <p>
+    {% for message in app.session.flashbag.get('notice') %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+  </p>
 
-		<tbody>
+<div role="tabpanel">
 
-	    {% for product in listProducts %}
-	      <tr>
-	      	<td><a href="{{ path('product_view', {'id': product.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
-	      	<td>{{ product.title }}</td>
-	      	<td>{{ product.comment }}</td>
-	      	{% if listPrices[product.id] is not defined %}
-		      	<td>-</td>
-		      	<td>-</td>
-		      	<td>-</td>
-	      	{% else %}
-		      	<td>{{ listPrices[product.id].unitPrice }} &euro;</td>
-		      	<td>{{ listPrices[product.id].unitPriceLiv }} &euro;</td>
-		      	<td>{{ listPrices[product.id].creaDate | date('d/m/Y') }}</td>
-	      	{% endif %}
-	      	<td>
-	      		<center>
-		          {% if product.active %}
-		            <span class="label label-success">Actif</span>
-		          {% else %}
-		            <span class="label label-danger">Inactif</span>
-		          {% endif %}
-	          	</center>
-	      	</td>
-	      	<td>
-	      		<center>
-		          {% if product.isFollowedStat %}
-		            <span class="label label-success">Suivi</span>
-		          {% else %}
-		            <span class="label label-danger">Non Suivi</span>
-		          {% endif %}
-	          	</center>
-	      	</td>
-	    {% endfor %}
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="tableau" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><div class="glyphicon glyphicon-th-list"></div>&nbsp;Produits</a></li>
+    <li role="graph"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><div class="glyphicon glyphicon-th-list"></div>&nbsp;Catégories</a></li>
+  </ul>
 
-		</tbody>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
 
-	</table>
+    		<br/>
+			<h4>Liste des produits</h4>
 
-{% if is_granted('ROLE_ADMIN') %}
- <a href="{{ path('product_add') }}" class="btn btn-default">Ajouter Produit</a>
-{% endif %}
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th style="width:20px;">&nbsp;</th>
+						<th>Libellé</th>
+						<th>Catégorie</th>
+						<th>Prix Unitaire</th>
+						<th>Prix Livraison</th>
+						<th>Date Prix</th>
+						<th style="width:20px;">Actif</th>
+						<th style="width:20px;">Stats</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+			    {% for product in listProducts %}
+			      <tr>
+			      	<td><a href="{{ path('product_view', {'id': product.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+			      	<td>{{ product.title }}</td>
+			      	<td>{{ product.category ? product.category.title : "-" }}</td>
+			      	{% if listPrices[product.id] is not defined %}
+				      	<td>-</td>
+				      	<td>-</td>
+				      	<td>-</td>
+			      	{% else %}
+				      	<td>{{ listPrices[product.id].unitPrice }} &euro;</td>
+				      	<td>{{ listPrices[product.id].unitPriceLiv }} &euro;</td>
+				      	<td>{{ listPrices[product.id].creaDate | date('d/m/Y') }}</td>
+			      	{% endif %}
+			      	<td>
+			      		<center>
+				          {% if product.active %}
+				            <span class="label label-success">Actif</span>
+				          {% else %}
+				            <span class="label label-danger">Inactif</span>
+				          {% endif %}
+			          	</center>
+			      	</td>
+			      	<td>
+			      		<center>
+				          {% if product.isFollowedStat %}
+				            <span class="label label-success">Suivi</span>
+				          {% else %}
+				            <span class="label label-danger">Non Suivi</span>
+				          {% endif %}
+			          	</center>
+			      	</td>
+			    {% endfor %}
+
+				</tbody>
+
+			</table>
+
+			{% if is_granted('ROLE_ADMIN') %}
+			 <a href="{{ path('product_add') }}" class="btn btn-default">Ajouter Produit</a>
+			{% endif %}
+
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="profile">
+
+
+    		<br/>
+			<h4>Liste des catégories de produits</h4>
+
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th style="width:20px;">&nbsp;</th>
+						<th>Libellé</th>
+						<th style="width:20px;">Stats</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+			    {% for category in listCategories %}
+			      <tr>
+			      	<td><a href="{{ path('category_view', {'id': category.id}) }}"><div class="glyphicon glyphicon-search"></div></a></td>
+			      	<td>{{ category.title }}</td>
+			      	<td>
+			      		<center>
+				          {% if category.isFollowedStat %}
+				            <span class="label label-success">Suivi</span>
+				          {% else %}
+				            <span class="label label-danger">Non Suivi</span>
+				          {% endif %}
+			          	</center>
+			      	</td>
+			    {% endfor %}
+
+				</tbody>
+
+			</table>
+
+			{% if is_granted('ROLE_ADMIN') %}
+			 <a href="{{ path('category_add') }}" class="btn btn-default">Ajouter Catégorie</a>
+			{% endif %}
+
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
 
 {% endblock %}

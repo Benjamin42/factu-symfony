@@ -395,6 +395,15 @@ class Client
         return $this;
     }
 
+    /**
+     * Get civilite
+     *
+     * @return \Factu\AppBundle\Entity\Type 
+     */
+    public function getCivilite()
+    {
+        return $this->civilite;
+    }
 
     /**
      * Set rue
@@ -509,16 +518,6 @@ class Client
     public function getVille()
     {
         return $this->ville;
-    }
-
-    /**
-     * Get civilite
-     *
-     * @return \Factu\AppBundle\Entity\Type 
-     */
-    public function getCivilite()
-    {
-        return $this->civilite;
     }
 
     /**

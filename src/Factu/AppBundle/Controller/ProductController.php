@@ -34,8 +34,14 @@ class ProductController extends Controller
 		    }
 	    }
 
+	    $listCategories = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:ProductCategory')
+	      ->findAll()
+	    ;
+
     	return $this->render('FactuAppBundle:Product:index.html.twig', array(
-	      'listProducts' => $listProducts, 'listPrices' => $listPrices
+	      'listProducts' => $listProducts, 'listPrices' => $listPrices, 'listCategories' => $listCategories
 	    ));
     }
 

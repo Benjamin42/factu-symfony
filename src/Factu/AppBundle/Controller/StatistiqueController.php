@@ -46,6 +46,11 @@ class StatistiqueController extends Controller
 	      ->getRepository('FactuAppBundle:Product')
 	      ->getFollowedStatProduct();
 
+	    $listCategories = $this->getDoctrine()
+	      ->getManager()
+	      ->getRepository('FactuAppBundle:ProductCategory')
+	      ->getFollowedStatCategories();
+
 	    // Commandes
 	    $listCommandes = null;
 	    if ($dateMonth != null) {
@@ -77,12 +82,12 @@ class StatistiqueController extends Controller
 
 			foreach ($commande->getCommandeProducts() as $commandeProduct) {
 				if ($commandeProduct->getQty() != null && $commandeProduct->getQty() > 0) {
-					$commandeDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQty());
-					$commandeTotalDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQty());
+					$commandeDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQty());
+					$commandeTotalDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQty());
 				}
 				if ($commandeProduct->getQtyGift() != null && $commandeProduct->getQtyGift() > 0) {
-					$commandeDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQtyGift());
-					$commandeTotalDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQtyGift());
+					$commandeDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQtyGift());
+					$commandeTotalDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQtyGift());
 				}
 			}
 
@@ -116,12 +121,12 @@ class StatistiqueController extends Controller
 
 			foreach ($bdl->getCommandeProducts() as $commandeProduct) {
 				if ($commandeProduct->getQty() != null && $commandeProduct->getQty() > 0) {
-					$commandeDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQty());
-					$commandeTotalDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQty());
+					$commandeDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQty());
+					$commandeTotalDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQty());
 				}
 				if ($commandeProduct->getQtyGift() != null && $commandeProduct->getQtyGift() > 0) {
-					$commandeDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQtyGift());
-					$commandeTotalDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQtyGift());
+					$commandeDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQtyGift());
+					$commandeTotalDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQtyGift());
 				}
 			}
 
@@ -130,6 +135,7 @@ class StatistiqueController extends Controller
 
     	return $this->render('FactuAppBundle:Statistique:end_month.html.twig', array(
 	      'listProducts' => $listProducts, 
+	      'listCategories' => $listCategories,
 	      'listCommandes' => $listCommandeDto, 
 	      'commandeTotalDto' => $commandeTotalDto, 
 	      'form' => $form->createView()
@@ -166,7 +172,7 @@ class StatistiqueController extends Controller
 
 			foreach ($commande->getCommandeProducts() as $commandeProduct) {
 				if ($commandeProduct->getQty() != null && $commandeProduct->getQty() > 0) {
-					$commandeDto->addProduct($commandeProduct->getProduct()->getId(), $commandeProduct->getQty());
+					$commandeDto->addProduct($commandeProduct->getProduct(), $commandeProduct->getQty());
 				}
 			}
 

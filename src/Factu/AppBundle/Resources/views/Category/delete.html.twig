@@ -1,0 +1,28 @@
+
+{% extends "::layout.html.twig" %}
+
+{% block title %}
+  Supprimer une catégorie - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+  <h2>Supprimer une catégorie</h2>
+
+  <p>
+    Etes-vous certain de vouloir supprimer la catégorie "{{ category.title }}" ?
+  </p>
+
+  <form action="{{ path('category_delete', {'id': category.id}) }}" method="post">
+    <a href="{{ path('product_home', {'id': category.id}) }}" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+      Retour a la liste
+    </a>
+
+    <input type="submit" value="Supprimer" class="btn btn-danger" />
+    
+    {# Ceci va générer le champ CSRF #}
+    {{ form_rest(form) }}
+  </form>
+
+{% endblock %}

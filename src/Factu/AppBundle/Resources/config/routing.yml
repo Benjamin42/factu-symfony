@@ -24,6 +24,23 @@ product_delete:
     path:      /product/delete/{id}
     defaults:  { _controller: FactuAppBundle:Product:delete }
 
+# CATEGORIES
+category_add:
+    path:      /category/add
+    defaults:  { _controller: FactuAppBundle:Category:add }
+
+category_view:
+    path:      /category/view/{id}
+    defaults:  { _controller: FactuAppBundle:Category:view }
+
+category_edit:
+    path:      /category/edit/{id}
+    defaults:  { _controller: FactuAppBundle:Category:edit }
+
+category_delete:
+    path:      /category/delete/{id}
+    defaults:  { _controller: FactuAppBundle:Category:delete }
+
 # SERVICE
 service_home:
     path:      /service

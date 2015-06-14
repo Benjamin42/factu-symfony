@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/css/datepicker3.css">
+    <link rel="stylesheet" type="text/css" href="http://harvesthq.github.io/chosen/chosen.css">
 
     <style>
       .very-small {
@@ -63,6 +64,7 @@
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/serial.js"></script>
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/themes/none.js"></script>
+    <script type="text/javascript" src="http://harvesthq.github.io/chosen/chosen.jquery.js"></script>
 
     <script>
 
@@ -103,6 +105,8 @@
       dataTableBdlParam["order"] = [[ 4, "desc" ]];
 
       $(document).ready(function(){
+          $('.chosen').chosen();
+
           $('.datepicker').datepicker({
             language: "fr",
             format: "dd/mm/yyyy",

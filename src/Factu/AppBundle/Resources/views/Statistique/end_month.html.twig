@@ -64,61 +64,153 @@
 
 	{{ form_end(form) }}
 
-	<table id="table-stats" class="table table-striped table-hover table-bordered">
-		<thead>
-			<tr>
-				<th>Date Sortie</th>
-				<th>N° Factu</th>
-				<th>N° BdL</th>
-				{% for product in listProducts %}
-					<th>{{ product.title }}</th>
-				{% endfor %}
-			</tr>
-		</thead>
 
-		<tbody>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="tableau" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab"><div class="glyphicon glyphicon-th-list"></div>&nbsp; Par produits</a></li>
+    <li role="graph"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"><div class="glyphicon glyphicon-th-list"></div>&nbsp;Par catégories</a></li>
+  </ul>
 
-	    {% for commande in listCommandes %}
-	      <tr>
-	      	<td><span>{{ commande.dateFactu | date('Y/m/d') }}</span>{{ commande.dateFactu | date('d/m/Y') }}</td>
-	      	<td align="center">
-	      		{% if commande.numFactu != null %}
-	      			<a href="{{ path('commande_view', {'id': commande.id}) }}">{{ commande.numFactu }}</a>
-	      		{% endif %}
-	      	</td>
-	      	<td align="center">
-	      		{% if commande.numBdl != null %}
-	      			<a href="{{ path('bdl_view', {'id': commande.id}) }}">{{ commande.numBdl }}</a>
-	      		{% endif %}
-	      	</td>
-			{% for product in listProducts %}
-				{% if commande.listProduct[product.id] is defined %}
-					<td align="right">{{ commande.listProduct[product.id] }}</td>
-				{% else %}
-					<td></td>
-				{% endif %}
-			{% endfor %}
-		{% endfor %}
+  <br/>
 
-		</tbody>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
 
-		<tfoot>
-			<tr>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
-				<th><b>Total</b></th>
-				{% for product in listProducts %}
-					<td align="right">
-					{% if commandeTotalDto.listProduct[product.id] is defined %}
-						<b>{{ commandeTotalDto.listProduct[product.id] }}</b>
-					{% else %}
-						&nbsp;
-					{% endif %}
-					</td>
-				{% endfor %}
-			</tr>	
-		</tfoot>
-	</table>
+	          {% if listProducts | length <= 0 %}
+	            Pas de produits suivis
+	          {% else %}
+
+				<table id="table-stats" class="table table-striped table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>Date Sortie</th>
+							<th>N° Factu</th>
+							<th>N° BdL</th>
+							{% for product in listProducts %}
+								<th>{{ product.title }}</th>
+							{% endfor %}
+						</tr>
+					</thead>
+
+					<tbody>
+
+				    {% for commande in listCommandes %}
+				      <tr>
+				      	<td><span>{{ commande.dateFactu | date('Y/m/d') }}</span>{{ commande.dateFactu | date('d/m/Y') }}</td>
+				      	<td align="center">
+				      		{% if commande.numFactu != null %}
+				      			<a href="{{ path('commande_view', {'id': commande.id}) }}">{{ commande.numFactu }}</a>
+				      		{% endif %}
+				      	</td>
+				      	<td align="center">
+				      		{% if commande.numBdl != null %}
+				      			<a href="{{ path('bdl_view', {'id': commande.id}) }}">{{ commande.numBdl }}</a>
+				      		{% endif %}
+				      	</td>
+						{% for product in listProducts %}
+							{% if commande.listProduct[product.id] is defined %}
+								<td align="right">{{ commande.listProduct[product.id] }}</td>
+							{% else %}
+								<td></td>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+
+					</tbody>
+
+					<tfoot>
+						<tr>
+							<th>&nbsp;</th>
+							<th>&nbsp;</th>
+							<th><b>Total</b></th>
+							{% for product in listProducts %}
+								<td align="right">
+								{% if commandeTotalDto.listProduct[product.id] is defined %}
+									<b>{{ commandeTotalDto.listProduct[product.id] }}</b>
+								{% else %}
+									&nbsp;
+								{% endif %}
+								</td>
+							{% endfor %}
+						</tr>	
+					</tfoot>
+				</table>
+			{% endif %}
+
+    </div>
+
+
+    <div role="tabpanel" class="tab-pane" id="profile">
+
+	          {% if listCategories | length <= 0 %}
+	            Pas de catégories suivies
+	          {% else %}
+
+				<table id="table-stats" class="table table-striped table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>Date Sortie</th>
+							<th>N° Factu</th>
+							<th>N° BdL</th>
+							{% for category in listCategories %}
+								<th>{{ category.title }}</th>
+							{% endfor %}
+						</tr>
+					</thead>
+
+					<tbody>
+
+				    {% for commande in listCommandes %}
+				      <tr>
+				      	<td><span>{{ commande.dateFactu | date('Y/m/d') }}</span>{{ commande.dateFactu | date('d/m/Y') }}</td>
+				      	<td align="center">
+				      		{% if commande.numFactu != null %}
+				      			<a href="{{ path('commande_view', {'id': commande.id}) }}">{{ commande.numFactu }}</a>
+				      		{% endif %}
+				      	</td>
+				      	<td align="center">
+				      		{% if commande.numBdl != null %}
+				      			<a href="{{ path('bdl_view', {'id': commande.id}) }}">{{ commande.numBdl }}</a>
+				      		{% endif %}
+				      	</td>
+						{% for category in listCategories %}
+							{% if commande.listCategory[category.id] is defined %}
+								<td align="right">{{ commande.listCategory[category.id] }}</td>
+							{% else %}
+								<td></td>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+
+					</tbody>
+
+					<tfoot>
+						<tr>
+							<th>&nbsp;</th>
+							<th>&nbsp;</th>
+							<th><b>Total</b></th>
+							{% for category in listCategories %}
+								<td align="right">
+								{% if commandeTotalDto.listCategory[category.id] is defined %}
+									<b>{{ commandeTotalDto.listCategory[category.id] }}</b>
+								{% else %}
+									&nbsp;
+								{% endif %}
+								</td>
+							{% endfor %}
+						</tr>	
+					</tfoot>
+				</table>
+			{% endif %}
+
+
+    </div>
+
+   </div>
+
+
+
 
 {% endblock %}
 

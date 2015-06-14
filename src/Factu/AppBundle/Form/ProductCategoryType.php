@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProductType extends AbstractType
+class ProductCategoryType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,22 +16,7 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('title',              'text')
-            ->add('category', 'entity', array(
-              'class'    => 'FactuAppBundle:ProductCategory',
-              'property' => 'title',
-              'multiple' => false,
-              'required' => false
-            ))
-            ->add('comment',            'textarea', array('required' => false))
-            ->add('active',             'checkbox', array('required' => false))
             ->add('isFollowedStat',     'checkbox', array('required' => false))
-            ->add('idColCsv',           'number', array('required' => false))
-            ->add('prices', 'collection', array(
-                'type' => new PriceType(),
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ))
             ->add('save',      'submit')
         ;
     }
@@ -42,7 +27,7 @@ class ProductType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Factu\AppBundle\Entity\Product'
+            'data_class' => 'Factu\AppBundle\Entity\ProductCategory'
         ));
     }
 
@@ -51,6 +36,6 @@ class ProductType extends AbstractType
      */
     public function getName()
     {
-        return 'factu_appbundle_product';
+        return 'factu_appbundle_product_category';
     }
 }
